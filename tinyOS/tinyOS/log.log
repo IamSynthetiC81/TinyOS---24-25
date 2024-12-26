@@ -1,0 +1,1061 @@
+TicksPerSecond :  10000000000 
+
+  0   1   -50.0
+  1   0   -50.0
+  1   4   -50.0
+  4   1   -50.0
+  1   7   -50.0
+  7   1   -50.0
+  1   2   -50.0
+  2   1   -50.0
+  4   5   -50.0
+  5   4   -50.0
+0:0:10.000000000 DEBUG (0): Booted
+0:0:10.000000000 DEBUG (0): curdepth = 0  ,  parentID= 0 
+0:0:10.000000000 DEBUG (0): Command selected is MAX
+0:0:10.000000000 DEBUG (1): Booted
+0:0:10.000000000 DEBUG (1): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (2): Booted
+0:0:10.000000000 DEBUG (2): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (3): Booted
+0:0:10.000000000 DEBUG (3): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (4): Booted
+0:0:10.000000000 DEBUG (4): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (5): Booted
+0:0:10.000000000 DEBUG (5): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (6): Booted
+0:0:10.000000000 DEBUG (6): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (7): Booted
+0:0:10.000000000 DEBUG (7): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (8): Booted
+0:0:10.000000000 DEBUG (8): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000000 DEBUG (9): Booted
+0:0:10.000000000 DEBUG (9): curdepth = 255  ,  parentID= 65535 
+0:0:10.000000010 DEBUG (0): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (1): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (2): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (3): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (4): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (5): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (6): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (7): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (8): Radio initialized successfully!!!
+0:0:10.000000010 DEBUG (9): Radio initialized successfully!!!
+0:0:10.488281260 DEBUG (0): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.488281260 DEBUG (0): 
+ ##################################### 
+0:0:10.488281260 DEBUG (0): #######   ROUTING    ############## 
+0:0:10.488281260 DEBUG (0): #####################################
+0:0:10.488281260 DEBUG (0): Sending RoutingMsg... 
+0:0:10.488281260 DEBUG (0): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.488281290 DEBUG (0): startEpoch()
+0:0:10.488281290 DEBUG (0): startEpoch(): Started Epoch Timer. Offset Milli = 40000
+0:0:10.512695322 DEBUG (1): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.512695322 DEBUG (1): Sending RoutingMsg... 
+0:0:10.512695322 DEBUG (1): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.512695352 DEBUG (1): startEpoch()
+0:0:10.512695352 DEBUG (1): startEpoch(): Started Epoch Timer. Offset Milli = 39850
+0:0:10.541015635 DEBUG (2): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.541015635 DEBUG (2): Sending RoutingMsg... 
+0:0:10.541015635 DEBUG (2): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.541015635 DEBUG (4): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.541015635 DEBUG (4): Sending RoutingMsg... 
+0:0:10.541015635 DEBUG (4): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.541015635 DEBUG (7): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.541015635 DEBUG (7): Sending RoutingMsg... 
+0:0:10.541015635 DEBUG (7): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.541015665 DEBUG (2): startEpoch()
+0:0:10.541015665 DEBUG (2): startEpoch(): Started Epoch Timer. Offset Milli = 39700
+0:0:10.541015665 DEBUG (4): startEpoch()
+0:0:10.541015665 DEBUG (4): startEpoch(): Started Epoch Timer. Offset Milli = 39700
+0:0:10.541015665 DEBUG (7): startEpoch()
+0:0:10.541015665 DEBUG (7): startEpoch(): Started Epoch Timer. Offset Milli = 39700
+0:0:10.570312510 DEBUG (5): RoutingMsgTimer fired!  radioBusy = False 
+0:0:10.570312510 DEBUG (5): Sending RoutingMsg... 
+0:0:10.570312510 DEBUG (5): RoutingMsg enqueued successfully in SendingQueue!!!
+0:0:10.570312540 DEBUG (5): startEpoch()
+0:0:10.570312540 DEBUG (5): startEpoch(): Started Epoch Timer. Offset Milli = 39550
+0:0:48.509765635 DEBUG (5): SlotTimer.fired()
+0:0:48.509765645 DEBUG (5): calculateData()
+0:0:48.509765645 DEBUG (5): calculateData(): No Data Received!!!
+0:0:48.509765645 DEBUG (5): calculateData(): Sending Measurement [36] to Parent 4 
+0:0:48.509765645 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:0:48.509765645 DEBUG (5): updateSensorValue(): New Measurement = 28
+0:0:48.509765665 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:0:48.514846812 DEBUG (4): DataMax packet received!!!  from 5 
+0:0:48.514846812 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:0:48.515014658 DEBUG (5): A Data Max package sent... True 
+0:0:48.607421885 DEBUG (5): LostTaskTimer.fired()
+0:0:48.626953135 DEBUG (2): SlotTimer.fired()
+0:0:48.626953135 DEBUG (4): SlotTimer.fired()
+0:0:48.626953135 DEBUG (7): SlotTimer.fired()
+0:0:48.626953145 DEBUG (2): calculateData()
+0:0:48.626953145 DEBUG (2): calculateData(): No Data Received!!!
+0:0:48.626953145 DEBUG (2): calculateData(): Sending Measurement [28] to Parent 1 
+0:0:48.626953145 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:0:48.626953145 DEBUG (2): updateSensorValue(): New Measurement = 34
+0:0:48.626953145 DEBUG (4): calculateData()
+0:0:48.626953145 DEBUG (4): calculateData(): Data Received from 5: Value = 36
+0:0:48.626953145 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:0:48.626953145 DEBUG (4): updateSensorValue(): New Measurement = 41
+0:0:48.626953145 DEBUG (7): calculateData()
+0:0:48.626953145 DEBUG (7): calculateData(): No Data Received!!!
+0:0:48.626953145 DEBUG (7): calculateData(): Sending Measurement [43] to Parent 1 
+0:0:48.626953145 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:0:48.626953145 DEBUG (7): updateSensorValue(): New Measurement = 50
+0:0:48.626953165 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:0:48.626953165 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:0:48.626953165 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:0:48.633346561 DEBUG (1): DataMax packet received!!!  from 7 
+0:0:48.633346561 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:0:48.633514406 DEBUG (7): A Data Max package sent... True 
+0:0:48.634674067 DEBUG (1): DataMax packet received!!!  from 4 
+0:0:48.634674067 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:0:48.634841913 DEBUG (4): A Data Max package sent... True 
+0:0:48.637405374 DEBUG (1): DataMax packet received!!!  from 2 
+0:0:48.637405374 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:0:48.637573220 DEBUG (2): A Data Max package sent... True 
+0:0:48.724609385 DEBUG (2): LostTaskTimer.fired()
+0:0:48.724609385 DEBUG (4): LostTaskTimer.fired()
+0:0:48.724609385 DEBUG (7): LostTaskTimer.fired()
+0:0:48.745117197 DEBUG (1): SlotTimer.fired()
+0:0:48.745117207 DEBUG (1): calculateData()
+0:0:48.745117207 DEBUG (1): calculateData(): Data Received from 7: Value = 43
+0:0:48.745117207 DEBUG (1): calculateData(): Data Received from 4: Value = 44
+0:0:48.745117207 DEBUG (1): calculateData(): Data Received from 2: Value = 28
+0:0:48.745117207 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:0:48.745117207 DEBUG (1): updateSensorValue(): New Measurement = 35
+0:0:48.745117227 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:0:48.752960199 DEBUG (0): DataMax packet received!!!  from 1 
+0:0:48.752960199 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:0:48.753128045 DEBUG (1): A Data Max package sent... True 
+0:0:48.842773447 DEBUG (1): LostTaskTimer.fired()
+0:0:48.867187510 DEBUG (0): SlotTimer.fired()
+0:0:48.867187520 DEBUG (0): calculateData()
+0:0:48.867187520 DEBUG (0): calculateData(): Data Received from 1: Value = 44
+0:0:48.867187520 DEBUG (0): calculateData(): Sending Results to PC
+0:0:48.867187520 DEBUG (0): 
+	rootResults(): MAX = 44
+
+0:0:48.867187520 DEBUG (0): updateSensorValue(): New Measurement = 31
+0:0:49.062500010 DEBUG (0): Epoch: 1
+0:0:49.062500010 DEBUG (1): Epoch: 1
+0:0:49.062500010 DEBUG (2): Epoch: 1
+0:0:49.062500010 DEBUG (4): Epoch: 1
+0:0:49.062500010 DEBUG (5): Epoch: 1
+0:0:49.062500010 DEBUG (7): Epoch: 1
+0:1:27.001953135 DEBUG (5): SlotTimer.fired()
+0:1:27.001953145 DEBUG (5): calculateData()
+0:1:27.001953145 DEBUG (5): calculateData(): No Data Received!!!
+0:1:27.001953145 DEBUG (5): calculateData(): Sending Measurement [28] to Parent 4 
+0:1:27.001953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:1:27.001953145 DEBUG (5): updateSensorValue(): New Measurement = 31
+0:1:27.001953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:1:27.004791283 DEBUG (4): DataMax packet received!!!  from 5 
+0:1:27.004791283 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:1:27.004959129 DEBUG (5): A Data Max package sent... True 
+0:1:27.099609385 DEBUG (5): LostTaskTimer.fired()
+0:1:27.148437510 DEBUG (2): SlotTimer.fired()
+0:1:27.148437510 DEBUG (4): SlotTimer.fired()
+0:1:27.148437510 DEBUG (7): SlotTimer.fired()
+0:1:27.148437520 DEBUG (2): calculateData()
+0:1:27.148437520 DEBUG (2): calculateData(): No Data Received!!!
+0:1:27.148437520 DEBUG (2): calculateData(): Sending Measurement [34] to Parent 1 
+0:1:27.148437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:1:27.148437520 DEBUG (2): updateSensorValue(): New Measurement = 39
+0:1:27.148437520 DEBUG (4): calculateData()
+0:1:27.148437520 DEBUG (4): calculateData(): Data Received from 5: Value = 28
+0:1:27.148437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:1:27.148437520 DEBUG (4): updateSensorValue(): New Measurement = 31
+0:1:27.148437520 DEBUG (7): calculateData()
+0:1:27.148437520 DEBUG (7): calculateData(): No Data Received!!!
+0:1:27.148437520 DEBUG (7): calculateData(): Sending Measurement [50] to Parent 1 
+0:1:27.148437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:1:27.148437520 DEBUG (7): updateSensorValue(): New Measurement = 43
+0:1:27.148437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:1:27.148437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:1:27.148437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:1:27.151824972 DEBUG (1): DataMax packet received!!!  from 7 
+0:1:27.151824972 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:1:27.151992817 DEBUG (7): A Data Max package sent... True 
+0:1:27.157791123 DEBUG (1): DataMax packet received!!!  from 2 
+0:1:27.157791123 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:1:27.157958969 DEBUG (2): A Data Max package sent... True 
+0:1:27.158721904 DEBUG (1): DataMax packet received!!!  from 4 
+0:1:27.158721904 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:1:27.158889749 DEBUG (4): A Data Max package sent... True 
+0:1:27.246093760 DEBUG (2): LostTaskTimer.fired()
+0:1:27.246093760 DEBUG (4): LostTaskTimer.fired()
+0:1:27.246093760 DEBUG (7): LostTaskTimer.fired()
+0:1:27.294921885 DEBUG (1): SlotTimer.fired()
+0:1:27.294921895 DEBUG (1): calculateData()
+0:1:27.294921895 DEBUG (1): calculateData(): Data Received from 7: Value = 50
+0:1:27.294921895 DEBUG (1): calculateData(): Data Received from 2: Value = 34
+0:1:27.294921895 DEBUG (1): calculateData(): Data Received from 4: Value = 41
+0:1:27.294921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:1:27.294921895 DEBUG (1): updateSensorValue(): New Measurement = 42
+0:1:27.294921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:1:27.297393824 DEBUG (0): DataMax packet received!!!  from 1 
+0:1:27.297393824 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:1:27.297561670 DEBUG (1): A Data Max package sent... True 
+0:1:27.392578135 DEBUG (1): LostTaskTimer.fired()
+0:1:27.441406260 DEBUG (0): SlotTimer.fired()
+0:1:27.441406270 DEBUG (0): calculateData()
+0:1:27.441406270 DEBUG (0): calculateData(): Data Received from 1: Value = 50
+0:1:27.441406270 DEBUG (0): calculateData(): Sending Results to PC
+0:1:27.441406270 DEBUG (0): 
+	rootResults(): MAX = 50
+
+0:1:27.441406270 DEBUG (0): updateSensorValue(): New Measurement = 37
+0:1:28.125000010 DEBUG (0): Epoch: 2
+0:1:28.125000010 DEBUG (1): Epoch: 2
+0:1:28.125000010 DEBUG (2): Epoch: 2
+0:1:28.125000010 DEBUG (4): Epoch: 2
+0:1:28.125000010 DEBUG (5): Epoch: 2
+0:1:28.125000010 DEBUG (7): Epoch: 2
+0:2:6.064453135 DEBUG (5): SlotTimer.fired()
+0:2:6.064453145 DEBUG (5): calculateData()
+0:2:6.064453145 DEBUG (5): calculateData(): No Data Received!!!
+0:2:6.064453145 DEBUG (5): calculateData(): Sending Measurement [31] to Parent 4 
+0:2:6.064453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:6.064453145 DEBUG (5): updateSensorValue(): New Measurement = 30
+0:2:6.064453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:2:6.069183362 DEBUG (4): DataMax packet received!!!  from 5 
+0:2:6.069183362 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:2:6.069351208 DEBUG (5): A Data Max package sent... True 
+0:2:6.162109385 DEBUG (5): LostTaskTimer.fired()
+0:2:6.210937510 DEBUG (2): SlotTimer.fired()
+0:2:6.210937510 DEBUG (4): SlotTimer.fired()
+0:2:6.210937510 DEBUG (7): SlotTimer.fired()
+0:2:6.210937520 DEBUG (2): calculateData()
+0:2:6.210937520 DEBUG (2): calculateData(): No Data Received!!!
+0:2:6.210937520 DEBUG (2): calculateData(): Sending Measurement [39] to Parent 1 
+0:2:6.210937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:6.210937520 DEBUG (2): updateSensorValue(): New Measurement = 31
+0:2:6.210937520 DEBUG (4): calculateData()
+0:2:6.210937520 DEBUG (4): calculateData(): Data Received from 5: Value = 31
+0:2:6.210937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:2:6.210937520 DEBUG (4): updateSensorValue(): New Measurement = 29
+0:2:6.210937520 DEBUG (7): calculateData()
+0:2:6.210937520 DEBUG (7): calculateData(): No Data Received!!!
+0:2:6.210937520 DEBUG (7): calculateData(): Sending Measurement [43] to Parent 1 
+0:2:6.210937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:6.210937520 DEBUG (7): updateSensorValue(): New Measurement = 41
+0:2:6.210937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:2:6.210937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:2:6.210937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:2:6.212677032 DEBUG (4): A Data Max package sent... True 
+0:2:6.213729882 DEBUG (7): A Data Max package sent... True 
+0:2:6.220809919 DEBUG (1): DataMax packet received!!!  from 2 
+0:2:6.220809919 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:2:6.220977764 DEBUG (2): A Data Max package sent... True 
+0:2:6.308593760 DEBUG (2): LostTaskTimer.fired()
+0:2:6.308593760 DEBUG (4): LostTaskTimer.fired()
+0:2:6.308593760 DEBUG (7): LostTaskTimer.fired()
+0:2:6.357421885 DEBUG (1): SlotTimer.fired()
+0:2:6.357421895 DEBUG (1): calculateData()
+0:2:6.357421895 DEBUG (1): calculateData(): Data Received from 2: Value = 39
+0:2:6.357421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:2:6.357421895 DEBUG (1): updateSensorValue(): New Measurement = 35
+0:2:6.357421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:2:6.361099261 DEBUG (0): DataMax packet received!!!  from 1 
+0:2:6.361099261 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:2:6.361267107 DEBUG (1): A Data Max package sent... True 
+0:2:6.455078135 DEBUG (1): LostTaskTimer.fired()
+0:2:6.503906260 DEBUG (0): SlotTimer.fired()
+0:2:6.503906270 DEBUG (0): calculateData()
+0:2:6.503906270 DEBUG (0): calculateData(): Data Received from 1: Value = 42
+0:2:6.503906270 DEBUG (0): calculateData(): Sending Results to PC
+0:2:6.503906270 DEBUG (0): 
+	rootResults(): MAX = 42
+
+0:2:6.503906270 DEBUG (0): updateSensorValue(): New Measurement = 30
+0:2:7.187500010 DEBUG (0): Epoch: 3
+0:2:7.187500010 DEBUG (1): Epoch: 3
+0:2:7.187500010 DEBUG (2): Epoch: 3
+0:2:7.187500010 DEBUG (4): Epoch: 3
+0:2:7.187500010 DEBUG (5): Epoch: 3
+0:2:7.187500010 DEBUG (7): Epoch: 3
+0:2:45.126953135 DEBUG (5): SlotTimer.fired()
+0:2:45.126953145 DEBUG (5): calculateData()
+0:2:45.126953145 DEBUG (5): calculateData(): No Data Received!!!
+0:2:45.126953145 DEBUG (5): calculateData(): Sending Measurement [30] to Parent 4 
+0:2:45.126953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:45.126953145 DEBUG (5): updateSensorValue(): New Measurement = 26
+0:2:45.126953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:2:45.134368893 DEBUG (4): DataMax packet received!!!  from 5 
+0:2:45.134368893 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:2:45.134536739 DEBUG (5): A Data Max package sent... True 
+0:2:45.224609385 DEBUG (5): LostTaskTimer.fired()
+0:2:45.273437510 DEBUG (2): SlotTimer.fired()
+0:2:45.273437510 DEBUG (4): SlotTimer.fired()
+0:2:45.273437510 DEBUG (7): SlotTimer.fired()
+0:2:45.273437520 DEBUG (2): calculateData()
+0:2:45.273437520 DEBUG (2): calculateData(): No Data Received!!!
+0:2:45.273437520 DEBUG (2): calculateData(): Sending Measurement [31] to Parent 1 
+0:2:45.273437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:45.273437520 DEBUG (2): updateSensorValue(): New Measurement = 23
+0:2:45.273437520 DEBUG (4): calculateData()
+0:2:45.273437520 DEBUG (4): calculateData(): Data Received from 5: Value = 30
+0:2:45.273437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:2:45.273437520 DEBUG (4): updateSensorValue(): New Measurement = 21
+0:2:45.273437520 DEBUG (7): calculateData()
+0:2:45.273437520 DEBUG (7): calculateData(): No Data Received!!!
+0:2:45.273437520 DEBUG (7): calculateData(): Sending Measurement [41] to Parent 1 
+0:2:45.273437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:45.273437520 DEBUG (7): updateSensorValue(): New Measurement = 47
+0:2:45.273437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:2:45.273437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:2:45.273437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:2:45.278930672 DEBUG (4): A Data Max package sent... True 
+0:2:45.279037483 DEBUG (2): A Data Max package sent... True 
+0:2:45.279998781 DEBUG (7): A Data Max package sent... True 
+0:2:45.371093760 DEBUG (2): LostTaskTimer.fired()
+0:2:45.371093760 DEBUG (4): LostTaskTimer.fired()
+0:2:45.371093760 DEBUG (7): LostTaskTimer.fired()
+0:2:45.419921885 DEBUG (1): SlotTimer.fired()
+0:2:45.419921895 DEBUG (1): calculateData()
+0:2:45.419921895 DEBUG (1): calculateData(): No Data Received!!!
+0:2:45.419921895 DEBUG (1): calculateData(): Sending Measurement [35] to Parent 0 
+0:2:45.419921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:2:45.419921895 DEBUG (1): updateSensorValue(): New Measurement = 28
+0:2:45.419921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:2:45.424163833 DEBUG (0): DataMax packet received!!!  from 1 
+0:2:45.424163833 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:2:45.424331679 DEBUG (1): A Data Max package sent... True 
+0:2:45.517578135 DEBUG (1): LostTaskTimer.fired()
+0:2:45.566406260 DEBUG (0): SlotTimer.fired()
+0:2:45.566406270 DEBUG (0): calculateData()
+0:2:45.566406270 DEBUG (0): calculateData(): Data Received from 1: Value = 35
+0:2:45.566406270 DEBUG (0): calculateData(): Sending Results to PC
+0:2:45.566406270 DEBUG (0): 
+	rootResults(): MAX = 35
+
+0:2:45.566406270 DEBUG (0): updateSensorValue(): New Measurement = 27
+0:2:46.250000010 DEBUG (0): Epoch: 4
+0:2:46.250000010 DEBUG (1): Epoch: 4
+0:2:46.250000010 DEBUG (2): Epoch: 4
+0:2:46.250000010 DEBUG (4): Epoch: 4
+0:2:46.250000010 DEBUG (5): Epoch: 4
+0:2:46.250000010 DEBUG (7): Epoch: 4
+0:3:24.189453135 DEBUG (5): SlotTimer.fired()
+0:3:24.189453145 DEBUG (5): calculateData()
+0:3:24.189453145 DEBUG (5): calculateData(): No Data Received!!!
+0:3:24.189453145 DEBUG (5): calculateData(): Sending Measurement [26] to Parent 4 
+0:3:24.189453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:3:24.189453145 DEBUG (5): updateSensorValue(): New Measurement = 33
+0:3:24.189453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:3:24.196121217 DEBUG (4): DataMax packet received!!!  from 5 
+0:3:24.196121217 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:3:24.196289063 DEBUG (5): A Data Max package sent... True 
+0:3:24.287109385 DEBUG (5): LostTaskTimer.fired()
+0:3:24.335937510 DEBUG (2): SlotTimer.fired()
+0:3:24.335937510 DEBUG (4): SlotTimer.fired()
+0:3:24.335937510 DEBUG (7): SlotTimer.fired()
+0:3:24.335937520 DEBUG (2): calculateData()
+0:3:24.335937520 DEBUG (2): calculateData(): No Data Received!!!
+0:3:24.335937520 DEBUG (2): calculateData(): Sending Measurement [23] to Parent 1 
+0:3:24.335937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:3:24.335937520 DEBUG (2): updateSensorValue(): New Measurement = 21
+0:3:24.335937520 DEBUG (4): calculateData()
+0:3:24.335937520 DEBUG (4): calculateData(): Data Received from 5: Value = 26
+0:3:24.335937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:3:24.335937520 DEBUG (4): updateSensorValue(): New Measurement = 25
+0:3:24.335937520 DEBUG (7): calculateData()
+0:3:24.335937520 DEBUG (7): calculateData(): No Data Received!!!
+0:3:24.335937520 DEBUG (7): calculateData(): Sending Measurement [47] to Parent 1 
+0:3:24.335937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:3:24.335937520 DEBUG (7): updateSensorValue(): New Measurement = 49
+0:3:24.335937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:3:24.335937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:3:24.335937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:3:24.343887323 DEBUG (7): A Data Max package sent... True 
+0:3:24.344390860 DEBUG (4): A Data Max package sent... True 
+0:3:24.345413192 DEBUG (2): A Data Max package sent... True 
+0:3:24.433593760 DEBUG (2): LostTaskTimer.fired()
+0:3:24.433593760 DEBUG (4): LostTaskTimer.fired()
+0:3:24.433593760 DEBUG (7): LostTaskTimer.fired()
+0:3:24.482421885 DEBUG (1): SlotTimer.fired()
+0:3:24.482421895 DEBUG (1): calculateData()
+0:3:24.482421895 DEBUG (1): calculateData(): No Data Received!!!
+0:3:24.482421895 DEBUG (1): calculateData(): Sending Measurement [28] to Parent 0 
+0:3:24.482421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:3:24.482421895 DEBUG (1): updateSensorValue(): New Measurement = 24
+0:3:24.482421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:3:24.485000635 DEBUG (0): DataMax packet received!!!  from 1 
+0:3:24.485000635 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:3:24.485168481 DEBUG (1): A Data Max package sent... True 
+0:3:24.580078135 DEBUG (1): LostTaskTimer.fired()
+0:3:24.628906260 DEBUG (0): SlotTimer.fired()
+0:3:24.628906270 DEBUG (0): calculateData()
+0:3:24.628906270 DEBUG (0): calculateData(): Data Received from 1: Value = 28
+0:3:24.628906270 DEBUG (0): calculateData(): Sending Results to PC
+0:3:24.628906270 DEBUG (0): 
+	rootResults(): MAX = 28
+
+0:3:24.628906270 DEBUG (0): updateSensorValue(): New Measurement = 33
+0:3:25.312500010 DEBUG (0): Epoch: 5
+0:3:25.312500010 DEBUG (1): Epoch: 5
+0:3:25.312500010 DEBUG (2): Epoch: 5
+0:3:25.312500010 DEBUG (4): Epoch: 5
+0:3:25.312500010 DEBUG (5): Epoch: 5
+0:3:25.312500010 DEBUG (7): Epoch: 5
+0:4:3.251953135 DEBUG (5): SlotTimer.fired()
+0:4:3.251953145 DEBUG (5): calculateData()
+0:4:3.251953145 DEBUG (5): calculateData(): No Data Received!!!
+0:4:3.251953145 DEBUG (5): calculateData(): Sending Measurement [33] to Parent 4 
+0:4:3.251953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:3.251953145 DEBUG (5): updateSensorValue(): New Measurement = 24
+0:4:3.251953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:4:3.261596663 DEBUG (4): DataMax packet received!!!  from 5 
+0:4:3.261596663 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:4:3.261764509 DEBUG (5): A Data Max package sent... True 
+0:4:3.349609385 DEBUG (5): LostTaskTimer.fired()
+0:4:3.398437510 DEBUG (2): SlotTimer.fired()
+0:4:3.398437510 DEBUG (4): SlotTimer.fired()
+0:4:3.398437510 DEBUG (7): SlotTimer.fired()
+0:4:3.398437520 DEBUG (2): calculateData()
+0:4:3.398437520 DEBUG (2): calculateData(): No Data Received!!!
+0:4:3.398437520 DEBUG (2): calculateData(): Sending Measurement [21] to Parent 1 
+0:4:3.398437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:3.398437520 DEBUG (2): updateSensorValue(): New Measurement = 26
+0:4:3.398437520 DEBUG (4): calculateData()
+0:4:3.398437520 DEBUG (4): calculateData(): Data Received from 5: Value = 33
+0:4:3.398437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:4:3.398437520 DEBUG (4): updateSensorValue(): New Measurement = 24
+0:4:3.398437520 DEBUG (7): calculateData()
+0:4:3.398437520 DEBUG (7): calculateData(): No Data Received!!!
+0:4:3.398437520 DEBUG (7): calculateData(): Sending Measurement [49] to Parent 1 
+0:4:3.398437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:3.398437520 DEBUG (7): updateSensorValue(): New Measurement = 42
+0:4:3.398437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:4:3.398437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:4:3.398437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:4:3.401336693 DEBUG (1): DataMax packet received!!!  from 2 
+0:4:3.401336693 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:4:3.401504538 DEBUG (2): A Data Max package sent... True 
+0:4:3.402496354 DEBUG (1): DataMax packet received!!!  from 4 
+0:4:3.402496354 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:4:3.402664200 DEBUG (4): A Data Max package sent... True 
+0:4:3.403839120 DEBUG (1): DataMax packet received!!!  from 7 
+0:4:3.403839120 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:4:3.404006966 DEBUG (7): A Data Max package sent... True 
+0:4:3.496093760 DEBUG (2): LostTaskTimer.fired()
+0:4:3.496093760 DEBUG (4): LostTaskTimer.fired()
+0:4:3.496093760 DEBUG (7): LostTaskTimer.fired()
+0:4:3.544921885 DEBUG (1): SlotTimer.fired()
+0:4:3.544921895 DEBUG (1): calculateData()
+0:4:3.544921895 DEBUG (1): calculateData(): Data Received from 2: Value = 21
+0:4:3.544921895 DEBUG (1): calculateData(): Data Received from 4: Value = 33
+0:4:3.544921895 DEBUG (1): calculateData(): Data Received from 7: Value = 49
+0:4:3.544921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:4:3.544921895 DEBUG (1): updateSensorValue(): New Measurement = 31
+0:4:3.544921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:4:3.551589967 DEBUG (0): DataMax packet received!!!  from 1 
+0:4:3.551589967 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:4:3.551757812 DEBUG (1): A Data Max package sent... True 
+0:4:3.642578135 DEBUG (1): LostTaskTimer.fired()
+0:4:3.691406260 DEBUG (0): SlotTimer.fired()
+0:4:3.691406270 DEBUG (0): calculateData()
+0:4:3.691406270 DEBUG (0): calculateData(): Data Received from 1: Value = 49
+0:4:3.691406270 DEBUG (0): calculateData(): Sending Results to PC
+0:4:3.691406270 DEBUG (0): 
+	rootResults(): MAX = 49
+
+0:4:3.691406270 DEBUG (0): updateSensorValue(): New Measurement = 26
+0:4:4.375000010 DEBUG (0): Epoch: 6
+0:4:4.375000010 DEBUG (1): Epoch: 6
+0:4:4.375000010 DEBUG (2): Epoch: 6
+0:4:4.375000010 DEBUG (4): Epoch: 6
+0:4:4.375000010 DEBUG (5): Epoch: 6
+0:4:4.375000010 DEBUG (7): Epoch: 6
+0:4:42.314453135 DEBUG (5): SlotTimer.fired()
+0:4:42.314453145 DEBUG (5): calculateData()
+0:4:42.314453145 DEBUG (5): calculateData(): No Data Received!!!
+0:4:42.314453145 DEBUG (5): calculateData(): Sending Measurement [24] to Parent 4 
+0:4:42.314453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:42.314453145 DEBUG (5): updateSensorValue(): New Measurement = 25
+0:4:42.314453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:4:42.318923964 DEBUG (4): DataMax packet received!!!  from 5 
+0:4:42.318923964 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:4:42.319091810 DEBUG (5): A Data Max package sent... True 
+0:4:42.412109385 DEBUG (5): LostTaskTimer.fired()
+0:4:42.460937510 DEBUG (2): SlotTimer.fired()
+0:4:42.460937510 DEBUG (4): SlotTimer.fired()
+0:4:42.460937510 DEBUG (7): SlotTimer.fired()
+0:4:42.460937520 DEBUG (2): calculateData()
+0:4:42.460937520 DEBUG (2): calculateData(): No Data Received!!!
+0:4:42.460937520 DEBUG (2): calculateData(): Sending Measurement [26] to Parent 1 
+0:4:42.460937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:42.460937520 DEBUG (2): updateSensorValue(): New Measurement = 33
+0:4:42.460937520 DEBUG (4): calculateData()
+0:4:42.460937520 DEBUG (4): calculateData(): Data Received from 5: Value = 24
+0:4:42.460937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:4:42.460937520 DEBUG (4): updateSensorValue(): New Measurement = 22
+0:4:42.460937520 DEBUG (7): calculateData()
+0:4:42.460937520 DEBUG (7): calculateData(): No Data Received!!!
+0:4:42.460937520 DEBUG (7): calculateData(): Sending Measurement [42] to Parent 1 
+0:4:42.460937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:4:42.460937520 DEBUG (7): updateSensorValue(): New Measurement = 45
+0:4:42.460937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:4:42.460937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:4:42.460937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:4:42.465942393 DEBUG (1): DataMax packet received!!!  from 2 
+0:4:42.465942393 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:4:42.466110239 DEBUG (2): A Data Max package sent... True 
+0:4:42.470001208 DEBUG (7): A Data Max package sent... True 
+0:4:42.470413193 DEBUG (4): A Data Max package sent... True 
+0:4:42.558593760 DEBUG (2): LostTaskTimer.fired()
+0:4:42.558593760 DEBUG (4): LostTaskTimer.fired()
+0:4:42.558593760 DEBUG (7): LostTaskTimer.fired()
+0:4:42.607421885 DEBUG (1): SlotTimer.fired()
+0:4:42.607421895 DEBUG (1): calculateData()
+0:4:42.607421895 DEBUG (1): calculateData(): Data Received from 2: Value = 26
+0:4:42.607421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:4:42.607421895 DEBUG (1): updateSensorValue(): New Measurement = 38
+0:4:42.607421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:4:42.614517210 DEBUG (0): DataMax packet received!!!  from 1 
+0:4:42.614517210 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:4:42.614685056 DEBUG (1): A Data Max package sent... True 
+0:4:42.705078135 DEBUG (1): LostTaskTimer.fired()
+0:4:42.753906260 DEBUG (0): SlotTimer.fired()
+0:4:42.753906270 DEBUG (0): calculateData()
+0:4:42.753906270 DEBUG (0): calculateData(): Data Received from 1: Value = 31
+0:4:42.753906270 DEBUG (0): calculateData(): Sending Results to PC
+0:4:42.753906270 DEBUG (0): 
+	rootResults(): MAX = 31
+
+0:4:42.753906270 DEBUG (0): updateSensorValue(): New Measurement = 20
+0:4:43.437500010 DEBUG (0): Epoch: 7
+0:4:43.437500010 DEBUG (1): Epoch: 7
+0:4:43.437500010 DEBUG (2): Epoch: 7
+0:4:43.437500010 DEBUG (4): Epoch: 7
+0:4:43.437500010 DEBUG (5): Epoch: 7
+0:4:43.437500010 DEBUG (7): Epoch: 7
+0:5:21.376953135 DEBUG (5): SlotTimer.fired()
+0:5:21.376953145 DEBUG (5): calculateData()
+0:5:21.376953145 DEBUG (5): calculateData(): No Data Received!!!
+0:5:21.376953145 DEBUG (5): calculateData(): Sending Measurement [25] to Parent 4 
+0:5:21.376953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:5:21.376953145 DEBUG (5): updateSensorValue(): New Measurement = 19
+0:5:21.376953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:5:21.386367783 DEBUG (4): DataMax packet received!!!  from 5 
+0:5:21.386367783 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:5:21.386535629 DEBUG (5): A Data Max package sent... True 
+0:5:21.474609385 DEBUG (5): LostTaskTimer.fired()
+0:5:21.523437510 DEBUG (2): SlotTimer.fired()
+0:5:21.523437510 DEBUG (4): SlotTimer.fired()
+0:5:21.523437510 DEBUG (7): SlotTimer.fired()
+0:5:21.523437520 DEBUG (2): calculateData()
+0:5:21.523437520 DEBUG (2): calculateData(): No Data Received!!!
+0:5:21.523437520 DEBUG (2): calculateData(): Sending Measurement [33] to Parent 1 
+0:5:21.523437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:5:21.523437520 DEBUG (2): updateSensorValue(): New Measurement = 29
+0:5:21.523437520 DEBUG (4): calculateData()
+0:5:21.523437520 DEBUG (4): calculateData(): Data Received from 5: Value = 25
+0:5:21.523437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:5:21.523437520 DEBUG (4): updateSensorValue(): New Measurement = 18
+0:5:21.523437520 DEBUG (7): calculateData()
+0:5:21.523437520 DEBUG (7): calculateData(): No Data Received!!!
+0:5:21.523437520 DEBUG (7): calculateData(): Sending Measurement [45] to Parent 1 
+0:5:21.523437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:5:21.523437520 DEBUG (7): updateSensorValue(): New Measurement = 47
+0:5:21.523437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:5:21.523437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:5:21.523437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:5:21.530838009 DEBUG (4): A Data Max package sent... True 
+0:5:21.531249995 DEBUG (7): A Data Max package sent... True 
+0:5:21.532501208 DEBUG (1): DataMax packet received!!!  from 2 
+0:5:21.532501208 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:5:21.532669053 DEBUG (2): A Data Max package sent... True 
+0:5:21.621093760 DEBUG (2): LostTaskTimer.fired()
+0:5:21.621093760 DEBUG (4): LostTaskTimer.fired()
+0:5:21.621093760 DEBUG (7): LostTaskTimer.fired()
+0:5:21.669921885 DEBUG (1): SlotTimer.fired()
+0:5:21.669921895 DEBUG (1): calculateData()
+0:5:21.669921895 DEBUG (1): calculateData(): Data Received from 2: Value = 33
+0:5:21.669921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:5:21.669921895 DEBUG (1): updateSensorValue(): New Measurement = 43
+0:5:21.669921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:5:21.674407972 DEBUG (0): DataMax packet received!!!  from 1 
+0:5:21.674407972 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:5:21.674575818 DEBUG (1): A Data Max package sent... True 
+0:5:21.767578135 DEBUG (1): LostTaskTimer.fired()
+0:5:21.816406260 DEBUG (0): SlotTimer.fired()
+0:5:21.816406270 DEBUG (0): calculateData()
+0:5:21.816406270 DEBUG (0): calculateData(): Data Received from 1: Value = 38
+0:5:21.816406270 DEBUG (0): calculateData(): Sending Results to PC
+0:5:21.816406270 DEBUG (0): 
+	rootResults(): MAX = 38
+
+0:5:21.816406270 DEBUG (0): updateSensorValue(): New Measurement = 20
+0:5:22.500000010 DEBUG (0): Epoch: 8
+0:5:22.500000010 DEBUG (1): Epoch: 8
+0:5:22.500000010 DEBUG (2): Epoch: 8
+0:5:22.500000010 DEBUG (4): Epoch: 8
+0:5:22.500000010 DEBUG (5): Epoch: 8
+0:5:22.500000010 DEBUG (7): Epoch: 8
+0:6:0.439453135 DEBUG (5): SlotTimer.fired()
+0:6:0.439453145 DEBUG (5): calculateData()
+0:6:0.439453145 DEBUG (5): calculateData(): No Data Received!!!
+0:6:0.439453145 DEBUG (5): calculateData(): Sending Measurement [19] to Parent 4 
+0:6:0.439453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:0.439453145 DEBUG (5): updateSensorValue(): New Measurement = 19
+0:6:0.439453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:6:0.447204585 DEBUG (4): DataMax packet received!!!  from 5 
+0:6:0.447204585 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:6:0.447372430 DEBUG (5): A Data Max package sent... True 
+0:6:0.537109385 DEBUG (5): LostTaskTimer.fired()
+0:6:0.585937510 DEBUG (2): SlotTimer.fired()
+0:6:0.585937510 DEBUG (4): SlotTimer.fired()
+0:6:0.585937510 DEBUG (7): SlotTimer.fired()
+0:6:0.585937520 DEBUG (2): calculateData()
+0:6:0.585937520 DEBUG (2): calculateData(): No Data Received!!!
+0:6:0.585937520 DEBUG (2): calculateData(): Sending Measurement [29] to Parent 1 
+0:6:0.585937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:0.585937520 DEBUG (2): updateSensorValue(): New Measurement = 26
+0:6:0.585937520 DEBUG (4): calculateData()
+0:6:0.585937520 DEBUG (4): calculateData(): Data Received from 5: Value = 19
+0:6:0.585937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:6:0.585937520 DEBUG (4): updateSensorValue(): New Measurement = 17
+0:6:0.585937520 DEBUG (7): calculateData()
+0:6:0.585937520 DEBUG (7): calculateData(): No Data Received!!!
+0:6:0.585937520 DEBUG (7): calculateData(): Sending Measurement [47] to Parent 1 
+0:6:0.585937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:0.585937520 DEBUG (7): updateSensorValue(): New Measurement = 42
+0:6:0.585937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:6:0.585937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:6:0.585937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:6:0.587707549 DEBUG (1): DataMax packet received!!!  from 4 
+0:6:0.587707549 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:6:0.587875395 DEBUG (4): A Data Max package sent... True 
+0:6:0.594528188 DEBUG (7): A Data Max package sent... True 
+0:6:0.594604481 DEBUG (2): A Data Max package sent... True 
+0:6:0.683593760 DEBUG (2): LostTaskTimer.fired()
+0:6:0.683593760 DEBUG (4): LostTaskTimer.fired()
+0:6:0.683593760 DEBUG (7): LostTaskTimer.fired()
+0:6:0.732421885 DEBUG (1): SlotTimer.fired()
+0:6:0.732421895 DEBUG (1): calculateData()
+0:6:0.732421895 DEBUG (1): calculateData(): Data Received from 4: Value = 19
+0:6:0.732421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:6:0.732421895 DEBUG (1): updateSensorValue(): New Measurement = 35
+0:6:0.732421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:6:0.739471434 DEBUG (0): DataMax packet received!!!  from 1 
+0:6:0.739471434 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:6:0.739639280 DEBUG (1): A Data Max package sent... True 
+0:6:0.830078135 DEBUG (1): LostTaskTimer.fired()
+0:6:0.878906260 DEBUG (0): SlotTimer.fired()
+0:6:0.878906270 DEBUG (0): calculateData()
+0:6:0.878906270 DEBUG (0): calculateData(): Data Received from 1: Value = 43
+0:6:0.878906270 DEBUG (0): calculateData(): Sending Results to PC
+0:6:0.878906270 DEBUG (0): 
+	rootResults(): MAX = 43
+
+0:6:0.878906270 DEBUG (0): updateSensorValue(): New Measurement = 25
+0:6:1.562500010 DEBUG (0): Epoch: 9
+0:6:1.562500010 DEBUG (1): Epoch: 9
+0:6:1.562500010 DEBUG (2): Epoch: 9
+0:6:1.562500010 DEBUG (4): Epoch: 9
+0:6:1.562500010 DEBUG (5): Epoch: 9
+0:6:1.562500010 DEBUG (7): Epoch: 9
+0:6:39.501953135 DEBUG (5): SlotTimer.fired()
+0:6:39.501953145 DEBUG (5): calculateData()
+0:6:39.501953145 DEBUG (5): calculateData(): No Data Received!!!
+0:6:39.501953145 DEBUG (5): calculateData(): Sending Measurement [19] to Parent 4 
+0:6:39.501953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:39.501953145 DEBUG (5): updateSensorValue(): New Measurement = 20
+0:6:39.501953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:6:39.505432149 DEBUG (4): DataMax packet received!!!  from 5 
+0:6:39.505432149 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:6:39.505599994 DEBUG (5): A Data Max package sent... True 
+0:6:39.599609385 DEBUG (5): LostTaskTimer.fired()
+0:6:39.648437510 DEBUG (2): SlotTimer.fired()
+0:6:39.648437510 DEBUG (4): SlotTimer.fired()
+0:6:39.648437510 DEBUG (7): SlotTimer.fired()
+0:6:39.648437520 DEBUG (2): calculateData()
+0:6:39.648437520 DEBUG (2): calculateData(): No Data Received!!!
+0:6:39.648437520 DEBUG (2): calculateData(): Sending Measurement [26] to Parent 1 
+0:6:39.648437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:39.648437520 DEBUG (2): updateSensorValue(): New Measurement = 24
+0:6:39.648437520 DEBUG (4): calculateData()
+0:6:39.648437520 DEBUG (4): calculateData(): Data Received from 5: Value = 19
+0:6:39.648437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:6:39.648437520 DEBUG (4): updateSensorValue(): New Measurement = 22
+0:6:39.648437520 DEBUG (7): calculateData()
+0:6:39.648437520 DEBUG (7): calculateData(): No Data Received!!!
+0:6:39.648437520 DEBUG (7): calculateData(): Sending Measurement [42] to Parent 1 
+0:6:39.648437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:6:39.648437520 DEBUG (7): updateSensorValue(): New Measurement = 48
+0:6:39.648437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:6:39.648437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:6:39.648437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:6:39.650573758 DEBUG (2): A Data Max package sent... True 
+0:6:39.651107812 DEBUG (4): A Data Max package sent... True 
+0:6:39.654602055 DEBUG (1): DataMax packet received!!!  from 7 
+0:6:39.654602055 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:6:39.654769901 DEBUG (7): A Data Max package sent... True 
+0:6:39.746093760 DEBUG (2): LostTaskTimer.fired()
+0:6:39.746093760 DEBUG (4): LostTaskTimer.fired()
+0:6:39.746093760 DEBUG (7): LostTaskTimer.fired()
+0:6:39.794921885 DEBUG (1): SlotTimer.fired()
+0:6:39.794921895 DEBUG (1): calculateData()
+0:6:39.794921895 DEBUG (1): calculateData(): Data Received from 7: Value = 42
+0:6:39.794921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:6:39.794921895 DEBUG (1): updateSensorValue(): New Measurement = 35
+0:6:39.794921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:6:39.798553485 DEBUG (0): DataMax packet received!!!  from 1 
+0:6:39.798553485 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:6:39.798721331 DEBUG (1): A Data Max package sent... True 
+0:6:39.892578135 DEBUG (1): LostTaskTimer.fired()
+0:6:39.941406260 DEBUG (0): SlotTimer.fired()
+0:6:39.941406270 DEBUG (0): calculateData()
+0:6:39.941406270 DEBUG (0): calculateData(): Data Received from 1: Value = 42
+0:6:39.941406270 DEBUG (0): calculateData(): Sending Results to PC
+0:6:39.941406270 DEBUG (0): 
+	rootResults(): MAX = 42
+
+0:6:39.941406270 DEBUG (0): updateSensorValue(): New Measurement = 20
+0:6:40.625000010 DEBUG (0): Epoch: 10
+0:6:40.625000010 DEBUG (1): Epoch: 10
+0:6:40.625000010 DEBUG (2): Epoch: 10
+0:6:40.625000010 DEBUG (4): Epoch: 10
+0:6:40.625000010 DEBUG (5): Epoch: 10
+0:6:40.625000010 DEBUG (7): Epoch: 10
+0:7:18.564453135 DEBUG (5): SlotTimer.fired()
+0:7:18.564453145 DEBUG (5): calculateData()
+0:7:18.564453145 DEBUG (5): calculateData(): No Data Received!!!
+0:7:18.564453145 DEBUG (5): calculateData(): Sending Measurement [20] to Parent 4 
+0:7:18.564453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:18.564453145 DEBUG (5): updateSensorValue(): New Measurement = 26
+0:7:18.564453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:7:18.566833522 DEBUG (4): DataMax packet received!!!  from 5 
+0:7:18.566833522 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:7:18.567001368 DEBUG (5): A Data Max package sent... True 
+0:7:18.662109385 DEBUG (5): LostTaskTimer.fired()
+0:7:18.710937510 DEBUG (2): SlotTimer.fired()
+0:7:18.710937510 DEBUG (4): SlotTimer.fired()
+0:7:18.710937510 DEBUG (7): SlotTimer.fired()
+0:7:18.710937520 DEBUG (2): calculateData()
+0:7:18.710937520 DEBUG (2): calculateData(): No Data Received!!!
+0:7:18.710937520 DEBUG (2): calculateData(): Sending Measurement [24] to Parent 1 
+0:7:18.710937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:18.710937520 DEBUG (2): updateSensorValue(): New Measurement = 17
+0:7:18.710937520 DEBUG (4): calculateData()
+0:7:18.710937520 DEBUG (4): calculateData(): Data Received from 5: Value = 20
+0:7:18.710937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:7:18.710937520 DEBUG (4): updateSensorValue(): New Measurement = 16
+0:7:18.710937520 DEBUG (7): calculateData()
+0:7:18.710937520 DEBUG (7): calculateData(): No Data Received!!!
+0:7:18.710937520 DEBUG (7): calculateData(): Sending Measurement [48] to Parent 1 
+0:7:18.710937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:18.710937520 DEBUG (7): updateSensorValue(): New Measurement = 47
+0:7:18.710937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:7:18.710937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:7:18.710937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:7:18.713745141 DEBUG (4): A Data Max package sent... True 
+0:7:18.714523335 DEBUG (7): A Data Max package sent... True 
+0:7:18.718048094 DEBUG (1): DataMax packet received!!!  from 2 
+0:7:18.718048094 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:7:18.718215940 DEBUG (2): A Data Max package sent... True 
+0:7:18.808593760 DEBUG (2): LostTaskTimer.fired()
+0:7:18.808593760 DEBUG (4): LostTaskTimer.fired()
+0:7:18.808593760 DEBUG (7): LostTaskTimer.fired()
+0:7:18.857421885 DEBUG (1): SlotTimer.fired()
+0:7:18.857421895 DEBUG (1): calculateData()
+0:7:18.857421895 DEBUG (1): calculateData(): Data Received from 2: Value = 24
+0:7:18.857421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:7:18.857421895 DEBUG (1): updateSensorValue(): New Measurement = 42
+0:7:18.857421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:7:18.863800051 DEBUG (0): DataMax packet received!!!  from 1 
+0:7:18.863800051 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:7:18.863967897 DEBUG (1): A Data Max package sent... True 
+0:7:18.955078135 DEBUG (1): LostTaskTimer.fired()
+0:7:19.003906260 DEBUG (0): SlotTimer.fired()
+0:7:19.003906270 DEBUG (0): calculateData()
+0:7:19.003906270 DEBUG (0): calculateData(): Data Received from 1: Value = 35
+0:7:19.003906270 DEBUG (0): calculateData(): Sending Results to PC
+0:7:19.003906270 DEBUG (0): 
+	rootResults(): MAX = 35
+
+0:7:19.003906270 DEBUG (0): updateSensorValue(): New Measurement = 19
+0:7:19.687500010 DEBUG (0): Epoch: 11
+0:7:19.687500010 DEBUG (1): Epoch: 11
+0:7:19.687500010 DEBUG (2): Epoch: 11
+0:7:19.687500010 DEBUG (4): Epoch: 11
+0:7:19.687500010 DEBUG (5): Epoch: 11
+0:7:19.687500010 DEBUG (7): Epoch: 11
+0:7:57.626953135 DEBUG (5): SlotTimer.fired()
+0:7:57.626953145 DEBUG (5): calculateData()
+0:7:57.626953145 DEBUG (5): calculateData(): No Data Received!!!
+0:7:57.626953145 DEBUG (5): calculateData(): Sending Measurement [26] to Parent 4 
+0:7:57.626953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:57.626953145 DEBUG (5): updateSensorValue(): New Measurement = 33
+0:7:57.626953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:7:57.635421744 DEBUG (4): DataMax packet received!!!  from 5 
+0:7:57.635421744 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:7:57.635589589 DEBUG (5): A Data Max package sent... True 
+0:7:57.724609385 DEBUG (5): LostTaskTimer.fired()
+0:7:57.773437510 DEBUG (2): SlotTimer.fired()
+0:7:57.773437510 DEBUG (4): SlotTimer.fired()
+0:7:57.773437510 DEBUG (7): SlotTimer.fired()
+0:7:57.773437520 DEBUG (2): calculateData()
+0:7:57.773437520 DEBUG (2): calculateData(): No Data Received!!!
+0:7:57.773437520 DEBUG (2): calculateData(): Sending Measurement [17] to Parent 1 
+0:7:57.773437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:57.773437520 DEBUG (2): updateSensorValue(): New Measurement = 14
+0:7:57.773437520 DEBUG (4): calculateData()
+0:7:57.773437520 DEBUG (4): calculateData(): Data Received from 5: Value = 26
+0:7:57.773437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:7:57.773437520 DEBUG (4): updateSensorValue(): New Measurement = 18
+0:7:57.773437520 DEBUG (7): calculateData()
+0:7:57.773437520 DEBUG (7): calculateData(): No Data Received!!!
+0:7:57.773437520 DEBUG (7): calculateData(): Sending Measurement [47] to Parent 1 
+0:7:57.773437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:7:57.773437520 DEBUG (7): updateSensorValue(): New Measurement = 47
+0:7:57.773437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:7:57.773437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:7:57.773437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:7:57.781356806 DEBUG (1): DataMax packet received!!!  from 7 
+0:7:57.781356806 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:7:57.781524651 DEBUG (7): A Data Max package sent... True 
+0:7:57.783248884 DEBUG (4): A Data Max package sent... True 
+0:7:57.783691386 DEBUG (2): A Data Max package sent... True 
+0:7:57.871093760 DEBUG (2): LostTaskTimer.fired()
+0:7:57.871093760 DEBUG (4): LostTaskTimer.fired()
+0:7:57.871093760 DEBUG (7): LostTaskTimer.fired()
+0:7:57.919921885 DEBUG (1): SlotTimer.fired()
+0:7:57.919921895 DEBUG (1): calculateData()
+0:7:57.919921895 DEBUG (1): calculateData(): Data Received from 7: Value = 47
+0:7:57.919921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:7:57.919921895 DEBUG (1): updateSensorValue(): New Measurement = 37
+0:7:57.919921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:7:57.930099468 DEBUG (0): DataMax packet received!!!  from 1 
+0:7:57.930099468 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:7:57.930267313 DEBUG (1): A Data Max package sent... True 
+0:7:58.017578135 DEBUG (1): LostTaskTimer.fired()
+0:7:58.066406260 DEBUG (0): SlotTimer.fired()
+0:7:58.066406270 DEBUG (0): calculateData()
+0:7:58.066406270 DEBUG (0): calculateData(): Data Received from 1: Value = 47
+0:7:58.066406270 DEBUG (0): calculateData(): Sending Results to PC
+0:7:58.066406270 DEBUG (0): 
+	rootResults(): MAX = 47
+
+0:7:58.066406270 DEBUG (0): updateSensorValue(): New Measurement = 15
+0:7:58.750000010 DEBUG (0): Epoch: 12
+0:7:58.750000010 DEBUG (1): Epoch: 12
+0:7:58.750000010 DEBUG (2): Epoch: 12
+0:7:58.750000010 DEBUG (4): Epoch: 12
+0:7:58.750000010 DEBUG (5): Epoch: 12
+0:7:58.750000010 DEBUG (7): Epoch: 12
+0:8:36.689453135 DEBUG (5): SlotTimer.fired()
+0:8:36.689453145 DEBUG (5): calculateData()
+0:8:36.689453145 DEBUG (5): calculateData(): No Data Received!!!
+0:8:36.689453145 DEBUG (5): calculateData(): Sending Measurement [33] to Parent 4 
+0:8:36.689453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:8:36.689453145 DEBUG (5): updateSensorValue(): New Measurement = 34
+0:8:36.689453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:8:36.696960445 DEBUG (4): DataMax packet received!!!  from 5 
+0:8:36.696960445 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:8:36.697128291 DEBUG (5): A Data Max package sent... True 
+0:8:36.787109385 DEBUG (5): LostTaskTimer.fired()
+0:8:36.835937510 DEBUG (2): SlotTimer.fired()
+0:8:36.835937510 DEBUG (4): SlotTimer.fired()
+0:8:36.835937510 DEBUG (7): SlotTimer.fired()
+0:8:36.835937520 DEBUG (2): calculateData()
+0:8:36.835937520 DEBUG (2): calculateData(): No Data Received!!!
+0:8:36.835937520 DEBUG (2): calculateData(): Sending Measurement [14] to Parent 1 
+0:8:36.835937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:8:36.835937520 DEBUG (2): updateSensorValue(): New Measurement = 18
+0:8:36.835937520 DEBUG (4): calculateData()
+0:8:36.835937520 DEBUG (4): calculateData(): Data Received from 5: Value = 33
+0:8:36.835937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:8:36.835937520 DEBUG (4): updateSensorValue(): New Measurement = 16
+0:8:36.835937520 DEBUG (7): calculateData()
+0:8:36.835937520 DEBUG (7): calculateData(): No Data Received!!!
+0:8:36.835937520 DEBUG (7): calculateData(): Sending Measurement [47] to Parent 1 
+0:8:36.835937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:8:36.835937520 DEBUG (7): updateSensorValue(): New Measurement = 45
+0:8:36.835937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:8:36.835937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:8:36.835937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:8:36.842880248 DEBUG (1): DataMax packet received!!!  from 4 
+0:8:36.842880248 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:8:36.843048094 DEBUG (4): A Data Max package sent... True 
+0:8:36.844070427 DEBUG (1): DataMax packet received!!!  from 2 
+0:8:36.844070427 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:8:36.844238273 DEBUG (2): A Data Max package sent... True 
+0:8:36.845367417 DEBUG (1): DataMax packet received!!!  from 7 
+0:8:36.845367417 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:8:36.845535263 DEBUG (7): A Data Max package sent... True 
+0:8:36.933593760 DEBUG (2): LostTaskTimer.fired()
+0:8:36.933593760 DEBUG (4): LostTaskTimer.fired()
+0:8:36.933593760 DEBUG (7): LostTaskTimer.fired()
+0:8:36.982421885 DEBUG (1): SlotTimer.fired()
+0:8:36.982421895 DEBUG (1): calculateData()
+0:8:36.982421895 DEBUG (1): calculateData(): Data Received from 4: Value = 33
+0:8:36.982421895 DEBUG (1): calculateData(): Data Received from 2: Value = 14
+0:8:36.982421895 DEBUG (1): calculateData(): Data Received from 7: Value = 47
+0:8:36.982421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:8:36.982421895 DEBUG (1): updateSensorValue(): New Measurement = 44
+0:8:36.982421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:8:36.989486693 DEBUG (0): DataMax packet received!!!  from 1 
+0:8:36.989486693 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:8:36.989654538 DEBUG (1): A Data Max package sent... True 
+0:8:37.080078135 DEBUG (1): LostTaskTimer.fired()
+0:8:37.128906260 DEBUG (0): SlotTimer.fired()
+0:8:37.128906270 DEBUG (0): calculateData()
+0:8:37.128906270 DEBUG (0): calculateData(): Data Received from 1: Value = 47
+0:8:37.128906270 DEBUG (0): calculateData(): Sending Results to PC
+0:8:37.128906270 DEBUG (0): 
+	rootResults(): MAX = 47
+
+0:8:37.128906270 DEBUG (0): updateSensorValue(): New Measurement = 13
+0:8:37.812500010 DEBUG (0): Epoch: 13
+0:8:37.812500010 DEBUG (1): Epoch: 13
+0:8:37.812500010 DEBUG (2): Epoch: 13
+0:8:37.812500010 DEBUG (4): Epoch: 13
+0:8:37.812500010 DEBUG (5): Epoch: 13
+0:8:37.812500010 DEBUG (7): Epoch: 13
+0:9:15.751953135 DEBUG (5): SlotTimer.fired()
+0:9:15.751953145 DEBUG (5): calculateData()
+0:9:15.751953145 DEBUG (5): calculateData(): No Data Received!!!
+0:9:15.751953145 DEBUG (5): calculateData(): Sending Measurement [34] to Parent 4 
+0:9:15.751953145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:15.751953145 DEBUG (5): updateSensorValue(): New Measurement = 32
+0:9:15.751953165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:9:15.761123644 DEBUG (4): DataMax packet received!!!  from 5 
+0:9:15.761123644 DEBUG (4): ### RoutingReceive.receive() end ##### 
+0:9:15.761291489 DEBUG (5): A Data Max package sent... True 
+0:9:15.849609385 DEBUG (5): LostTaskTimer.fired()
+0:9:15.898437510 DEBUG (2): SlotTimer.fired()
+0:9:15.898437510 DEBUG (4): SlotTimer.fired()
+0:9:15.898437510 DEBUG (7): SlotTimer.fired()
+0:9:15.898437520 DEBUG (2): calculateData()
+0:9:15.898437520 DEBUG (2): calculateData(): No Data Received!!!
+0:9:15.898437520 DEBUG (2): calculateData(): Sending Measurement [18] to Parent 1 
+0:9:15.898437520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:15.898437520 DEBUG (2): updateSensorValue(): New Measurement = 20
+0:9:15.898437520 DEBUG (4): calculateData()
+0:9:15.898437520 DEBUG (4): calculateData(): Data Received from 5: Value = 34
+0:9:15.898437520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:9:15.898437520 DEBUG (4): updateSensorValue(): New Measurement = 18
+0:9:15.898437520 DEBUG (7): calculateData()
+0:9:15.898437520 DEBUG (7): calculateData(): No Data Received!!!
+0:9:15.898437520 DEBUG (7): calculateData(): Sending Measurement [45] to Parent 1 
+0:9:15.898437520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:15.898437520 DEBUG (7): updateSensorValue(): New Measurement = 50
+0:9:15.898437540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:9:15.898437540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:9:15.898437540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:9:15.900268584 DEBUG (1): DataMax packet received!!!  from 4 
+0:9:15.900268584 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:15.900436430 DEBUG (4): A Data Max package sent... True 
+0:9:15.903472911 DEBUG (1): DataMax packet received!!!  from 2 
+0:9:15.903472911 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:15.903640756 DEBUG (2): A Data Max package sent... True 
+0:9:15.906433099 DEBUG (1): DataMax packet received!!!  from 7 
+0:9:15.906433099 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:15.906600945 DEBUG (7): A Data Max package sent... True 
+0:9:15.996093760 DEBUG (2): LostTaskTimer.fired()
+0:9:15.996093760 DEBUG (4): LostTaskTimer.fired()
+0:9:15.996093760 DEBUG (7): LostTaskTimer.fired()
+0:9:16.044921885 DEBUG (1): SlotTimer.fired()
+0:9:16.044921895 DEBUG (1): calculateData()
+0:9:16.044921895 DEBUG (1): calculateData(): Data Received from 4: Value = 34
+0:9:16.044921895 DEBUG (1): calculateData(): Data Received from 2: Value = 18
+0:9:16.044921895 DEBUG (1): calculateData(): Data Received from 7: Value = 45
+0:9:16.044921895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:9:16.044921895 DEBUG (1): updateSensorValue(): New Measurement = 47
+0:9:16.044921915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:9:16.053359976 DEBUG (0): DataMax packet received!!!  from 1 
+0:9:16.053359976 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:9:16.053527821 DEBUG (1): A Data Max package sent... True 
+0:9:16.142578135 DEBUG (1): LostTaskTimer.fired()
+0:9:16.191406260 DEBUG (0): SlotTimer.fired()
+0:9:16.191406270 DEBUG (0): calculateData()
+0:9:16.191406270 DEBUG (0): calculateData(): Data Received from 1: Value = 45
+0:9:16.191406270 DEBUG (0): calculateData(): Sending Results to PC
+0:9:16.191406270 DEBUG (0): 
+	rootResults(): MAX = 45
+
+0:9:16.191406270 DEBUG (0): updateSensorValue(): New Measurement = 10
+0:9:16.875000010 DEBUG (0): Epoch: 14
+0:9:16.875000010 DEBUG (1): Epoch: 14
+0:9:16.875000010 DEBUG (2): Epoch: 14
+0:9:16.875000010 DEBUG (4): Epoch: 14
+0:9:16.875000010 DEBUG (5): Epoch: 14
+0:9:16.875000010 DEBUG (7): Epoch: 14
+0:9:54.814453135 DEBUG (5): SlotTimer.fired()
+0:9:54.814453145 DEBUG (5): calculateData()
+0:9:54.814453145 DEBUG (5): calculateData(): No Data Received!!!
+0:9:54.814453145 DEBUG (5): calculateData(): Sending Measurement [32] to Parent 4 
+0:9:54.814453145 DEBUG (5): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:54.814453145 DEBUG (5): updateSensorValue(): New Measurement = 41
+0:9:54.814453165 DEBUG (5): sendMaxDataTask(): Send returned success!!!
+0:9:54.816604642 DEBUG (5): A Data Max package sent... True 
+0:9:54.912109385 DEBUG (5): LostTaskTimer.fired()
+0:9:54.960937510 DEBUG (2): SlotTimer.fired()
+0:9:54.960937510 DEBUG (4): SlotTimer.fired()
+0:9:54.960937510 DEBUG (7): SlotTimer.fired()
+0:9:54.960937520 DEBUG (2): calculateData()
+0:9:54.960937520 DEBUG (2): calculateData(): No Data Received!!!
+0:9:54.960937520 DEBUG (2): calculateData(): Sending Measurement [20] to Parent 1 
+0:9:54.960937520 DEBUG (2): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:54.960937520 DEBUG (2): updateSensorValue(): New Measurement = 19
+0:9:54.960937520 DEBUG (4): calculateData()
+0:9:54.960937520 DEBUG (4): calculateData(): No Data Received!!!
+0:9:54.960937520 DEBUG (4): calculateData(): Sending Measurement [18] to Parent 1 
+0:9:54.960937520 DEBUG (4): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:54.960937520 DEBUG (4): updateSensorValue(): New Measurement = 18
+0:9:54.960937520 DEBUG (7): calculateData()
+0:9:54.960937520 DEBUG (7): calculateData(): No Data Received!!!
+0:9:54.960937520 DEBUG (7): calculateData(): Sending Measurement [50] to Parent 1 
+0:9:54.960937520 DEBUG (7): calculateData(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!
+0:9:54.960937520 DEBUG (7): updateSensorValue(): New Measurement = 45
+0:9:54.960937540 DEBUG (2): sendMaxDataTask(): Send returned success!!!
+0:9:54.960937540 DEBUG (4): sendMaxDataTask(): Send returned success!!!
+0:9:54.960937540 DEBUG (7): sendMaxDataTask(): Send returned success!!!
+0:9:54.966659552 DEBUG (1): DataMax packet received!!!  from 2 
+0:9:54.966659552 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:54.966827398 DEBUG (2): A Data Max package sent... True 
+0:9:54.970993024 DEBUG (1): DataMax packet received!!!  from 7 
+0:9:54.970993024 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:54.971160869 DEBUG (7): A Data Max package sent... True 
+0:9:54.973983728 DEBUG (1): DataMax packet received!!!  from 4 
+0:9:54.973983728 DEBUG (1): ### RoutingReceive.receive() end ##### 
+0:9:54.974151574 DEBUG (4): A Data Max package sent... True 
+0:9:55.058593760 DEBUG (2): LostTaskTimer.fired()
+0:9:55.058593760 DEBUG (4): LostTaskTimer.fired()
+0:9:55.058593760 DEBUG (7): LostTaskTimer.fired()
+0:9:55.107421885 DEBUG (1): SlotTimer.fired()
+0:9:55.107421895 DEBUG (1): calculateData()
+0:9:55.107421895 DEBUG (1): calculateData(): Data Received from 2: Value = 20
+0:9:55.107421895 DEBUG (1): calculateData(): Data Received from 7: Value = 50
+0:9:55.107421895 DEBUG (1): calculateData(): Data Received from 4: Value = 18
+0:9:55.107421895 DEBUG (1): calculateData(): DataMaxMsg enqueued in SendingQueue successfully!!!
+0:9:55.107421895 DEBUG (1): updateSensorValue(): New Measurement = 45
+0:9:55.107421915 DEBUG (1): sendMaxDataTask(): Send returned success!!!
+0:9:55.116165150 DEBUG (0): DataMax packet received!!!  from 1 
+0:9:55.116165150 DEBUG (0): ### RoutingReceive.receive() end ##### 
+0:9:55.116332995 DEBUG (1): A Data Max package sent... True 
+0:9:55.205078135 DEBUG (1): LostTaskTimer.fired()
+0:9:55.253906260 DEBUG (0): SlotTimer.fired()
+0:9:55.253906270 DEBUG (0): calculateData()
+0:9:55.253906270 DEBUG (0): calculateData(): Data Received from 1: Value = 50
+0:9:55.253906270 DEBUG (0): calculateData(): Sending Results to PC
+0:9:55.253906270 DEBUG (0): 
+	rootResults(): MAX = 50
+
+0:9:55.253906270 DEBUG (0): updateSensorValue(): New Measurement = 7
+0:9:55.937500020 DEBUG (0): Radio stopped!
+0:9:55.937500020 DEBUG (1): Radio stopped!
+0:9:55.937500020 DEBUG (2): Radio stopped!
+0:9:55.937500020 DEBUG (4): Radio stopped!
+0:9:55.937500020 DEBUG (5): Radio stopped!
+0:9:55.937500020 DEBUG (7): Radio stopped!
+Node 0 connected with node 1 True True
+Node 0 connected with node 2 False False
+Node 1 connected with node 7 True True
+Node 2 connected with node 3 False False
+Node 4 connected with node 8 False False
+Node 4 connected with node 5 True True
