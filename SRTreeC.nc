@@ -5,7 +5,7 @@ module SRTreeC
 	uses interface Boot;
 	uses interface SplitControl as RadioControl;
 	
-	uses interface Timer<TMilli> as LostTaskTimer;
+	// uses interface Timer<TMilli> as LostTaskTimer;
 
 	uses interface Packet as RoutingPacket;
 	uses interface AMSend as RoutingAMSend;
@@ -24,14 +24,10 @@ module SRTreeC
 	uses interface PacketQueue as DataAvgSendQueue;
 	uses interface PacketQueue as DataAvgReceiveQueue;
 	
-
-	uses interface Timer<TMilli> as RoutingMsgTimer;
 	uses interface Timer<TMilli> as EpochTimer;
-	uses interface Timer<TMilli> as SlotTimer;
 	
 	uses interface Receive as RoutingReceive;
 	uses interface Receive as DataMaxReceive;
-	
 	
 	uses interface PacketQueue as RoutingSendQueue;
 	uses interface PacketQueue as RoutingReceiveQueue;
@@ -51,7 +47,8 @@ implementation
 	message_t serialPkt;
 	message_t serialRecPkt;
 	
-	 
+	uint64_t bootTime = -1;
+
 	bool RoutingSendBusy=FALSE;
 	bool NotifySendBusy=FALSE;	 
 	bool MessageAvgSendBusy=FALSE;
@@ -79,12 +76,13 @@ implementation
 	task void calculateData();
 	task void sendMaxDataTask();
 	task void sendAvgDataTask();
+	task void SendRoutingMessage();
+	task void Window();
 
 	void setLostMeasurementSendTask(bool state){
 		atomic{
 			lostMeasurementSendTask=state;
 		}
-		call LostTaskTimer.startOneShot(LOST_TASK_PERIOD);
 	}
 
 	void setRoutingSendBusy(bool state){
@@ -107,9 +105,6 @@ implementation
 		}else{
 			dbg("SRTreeC","setMessageSendBusy() ERROR\n");
 		}
-
-		// to-do
-		if (state) call LostTaskTimer.startOneShot(LOST_TASK_PERIOD);
 	}
 	
 	/**
@@ -161,6 +156,8 @@ implementation
 	event void Boot.booted(){
 		dbg("Boot", "Booted\n");
 
+		bootTime = sim_time()/10000000000;
+
 		// Start the radio control interface to enable communication
 		call RadioControl.start();
 
@@ -199,7 +196,11 @@ implementation
 		if (err == SUCCESS) {
 			dbg("Radio" , "Radio initialized successfully!!!\n");		
 			if (TOS_NODE_ID==0){
-				call RoutingMsgTimer.startOneShot(500);
+				// @TODO : send routing message, and start the epoch timer
+				// call RoutingMsgTimer.startOneShot(500);
+				post SendRoutingMessage();
+				post startEpoch();
+				// call EpochTimer.startPeriodicAt(sim_time() - bootTime,EPOCH_PERIOD_MILLI);
 			}
 		} else {
 			dbg("Radio" , "Radio initialization failed! Retrying...\n");
@@ -211,14 +212,14 @@ implementation
 		dbg("Radio", "Radio stopped!\n");
 	}
 	
-	event void RoutingMsgTimer.fired(){
+	task void SendRoutingMessage(){
 		message_t tmp;
 		error_t enqueueDone;
 		
 		RoutingMsg* mrpkt;
-		dbg("SRTreeC", "RoutingMsgTimer fired!  radioBusy = %s \n",(RoutingSendBusy)?"True":"False");
+		dbg("SRTreeC", "SendRoutingMessage: radioBusy = %s \n",(RoutingSendBusy)?"True":"False");
 		if (TOS_NODE_ID==0){
-			dbg("SRTreeC", "\n ##################################### \n");
+			dbg("SRTreeC", "\n\t\t\t\t\t\t\t##################################### \n");
 			dbg("SRTreeC", "#######   ROUTING    ############## \n");
 			dbg("SRTreeC", "#####################################\n");
 		}
@@ -262,43 +263,16 @@ implementation
 	event void EpochTimer.fired() {
 		epochCounter++;
 
-		// Stop the experiment after 15 epochs
-		if(epochCounter == 15) {
-			call RadioControl.stop();
-			call EpochTimer.stop();
-			return;
-		}
-		
 		dbg("SRTreeC", "Epoch: %d\n", epochCounter);
 		
-		// Start the window timer of the node
-		call SlotTimer.startOneShot(offset - OFFSET_FIX);
+		post Window();
 	}
 
 	// Timer to send data
-	event void SlotTimer.fired() {
+	task void Window() {
+		// @TODO : SlotTimer is deprecated, replace with task
 		dbg("SRTreeC", "SlotTimer.fired()\n");
 		post calculateData();
-	}
-
-	// to-do
-	event void LostTaskTimer.fired(){
-		dbg("SRTreeC", "LostTaskTimer.fired()\n");
-		if(lostMeasurementSendTask){
-			if(COMMAND_TO_RUN == COMMAND_MAX){
-				if(!(call DataMaxSendQueue.empty())){
-					post sendMaxDataTask();
-					return;
-				}
-			}else if(COMMAND_TO_RUN == COMMAND_AVG){
-				if(!(call DataAvgSendQueue.empty())){
-					post sendAvgDataTask();
-					return;
-				}
-			}
-			dbg("SRTreeC","LostTaskTimer.fired(): No lost task to be executed");
-		}
-		
 	}
 
 	event void DataMaxAMSend.sendDone(message_t * msg , error_t err){
@@ -417,21 +391,22 @@ implementation
 	
 	// Start Epoch
 	task void startEpoch(){
-		dbg("SRTreeC", "startEpoch()\n");
+		uint32_t jitter = (call RandomGenerator.rand32() % JITTER);
+		
+		// dbg("SRTreeC", "Epoch fired @ %s\n", sim_time_string());
+		// dbg("SRTreeC", "Epoch time @ %d\n", sim_time()/10000000000);
 
-		//Calculate offset (for sending measurements)
-		if(COMMAND_TO_RUN == COMMAND_AVG){
-			offset = EPOCH_PERIOD_MILLI-(AVG_STEP*(curdepth));
-		}else{
-			offset = EPOCH_PERIOD_MILLI-(MAX_STEP*(curdepth));
-		}
+		// dbg("SRTreeC", "startEpoch()\n");
+		// dbg("SRTreeC", "Epoch Period: %d\n", EPOCH_PERIOD_MILLI);
+		// dbg("SRTreeC", "Start Time: %d\n", sim_time()/10000000000 - bootTime - jitter-curdepth*50);
+		// dbg("SRTreeC", "Jitter: %d\n", jitter);
+		// dbg("SRTreeC", "Current Depth: %d\n", curdepth);
+		// dbg("SRTreeC", "Parent ID: %d\n", parentID);
 
-		// Start window timer
-		call SlotTimer.startOneShot(offset - OFFSET_FIX);
-		dbg("SRTreeC", "startEpoch(): Started Epoch Timer. Offset Milli = %d\n",offset);
+		// post Window();
 
 		// Start epoch timer 
-		call EpochTimer.startPeriodicAt(0,EPOCH_PERIOD_MILLI);
+		call EpochTimer.startPeriodicAt(sim_time()/10000000000 - bootTime - jitter-curdepth*100,EPOCH_PERIOD_MILLI);
 	}
 
 	task void sendRoutingTask(){
@@ -477,7 +452,7 @@ implementation
 		}
 
 		// Start the epoch after the routing message is sent 
-		post startEpoch();
+		// post startEpoch();
 	}
 
 	task void receiveRoutingTask() {
@@ -503,7 +478,7 @@ implementation
 			// Get the source of the message
 			SID = call RoutingAMPacket.source(&radioRoutingRecPkt);
 
-			// dbg("SRTreeC" , "receiveRoutingTask():senderID= %d , depth= %d \n", SID , mpkt->depth);
+			dbg("SRTreeC" , "receiveRoutingTask():senderID= %d , depth= %d \n", SID , mpkt->depth);
 			
 			// Case when the node has no parent
 			if ( (parentID<0)||(parentID>=65535)) {
@@ -515,21 +490,26 @@ implementation
 				
 				// Begin routing timer if it's a non-root node
 				if (TOS_NODE_ID!=0){
-					call RoutingMsgTimer.startOneShot(TIMER_FAST_PERIOD);
+					// @TODO : RoutingMsgTimer is deprecated, replace with task
+					// call RoutingMsgTimer.startOneShot(TIMER_FAST_PERIOD);
+					post SendRoutingMessage();
 				}
-
-			} else { //case where the node has already a parent, but found one that it's closer to
-				if (( curdepth > mpkt->depth +1)){					
+				post startEpoch();
+			} 
+			// else { //case where the node has already a parent, but found one that it's closer to
+			// 	//@TODO : This functionality is not endorsed it TAG. To be removed
+			// 	if (( curdepth > mpkt->depth +1)){					
 			
-					parentID= call RoutingAMPacket.source(&radioRoutingRecPkt);//mpkt->senderID;
-					curdepth = mpkt->depth + 1;
+			// 		parentID= call RoutingAMPacket.source(&radioRoutingRecPkt);//mpkt->senderID;
+			// 		curdepth = mpkt->depth + 1;
 					
-					// Begin routing timer if it's a non-root node
-					if (TOS_NODE_ID!=0){
-						call RoutingMsgTimer.startOneShot(TIMER_FAST_PERIOD);
-					}
-				}
-			}
+			// 		// Begin routing timer if it's a non-root node
+			// 		if (TOS_NODE_ID!=0){
+
+			// 			call RoutingMsgTimer.startOneShot(TIMER_FAST_PERIOD);
+			// 		}
+			// 	}
+			// }
 		}
 		else{ // Wrong size of message
 			dbg("SRTreeC","receiveRoutingTask():Empty message!!! \n");

@@ -10,16 +10,16 @@ implementation{
 	#endif
 
 	#ifdef PRINTFDBG_MODE
-			components PrintfC;
+		components PrintfC;
 	#endif
 
 	components MainC, ActiveMessageC;
-	components new TimerMilliC() as RoutingMsgTimerC;
+	// components new TimerMilliC() as RoutingMsgTimerC;
 	components new TimerMilliC() as EpochTimerC;
-	components new TimerMilliC() as SlotTimerC;
+	// components new TimerMilliC() as SlotTimerC;
 
 
-	components new TimerMilliC() as LostTaskTimerC;
+	// components new TimerMilliC() as LostTaskTimerC;
 	
 	components new AMSenderC(AM_ROUTINGMSG) as RoutingSenderC;
 	components new AMReceiverC(AM_ROUTINGMSG) as RoutingReceiverC;
@@ -42,10 +42,10 @@ implementation{
 	
 	SRTreeC.RadioControl -> ActiveMessageC;
 	
-	SRTreeC.RoutingMsgTimer->RoutingMsgTimerC;
+	// SRTreeC.RoutingMsgTimer->RoutingMsgTimerC;
 	SRTreeC.EpochTimer->EpochTimerC;
-	SRTreeC.SlotTimer->SlotTimerC;
-	SRTreeC.LostTaskTimer->LostTaskTimerC;
+	// SRTreeC.SlotTimer->SlotTimerC;
+	// SRTreeC.LostTaskTimer->LostTaskTimerC;
 	
 	// Routing
 	SRTreeC.RoutingPacket->RoutingSenderC.Packet;
