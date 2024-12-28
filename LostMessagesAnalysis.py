@@ -1,4 +1,4 @@
-
+import sys
 
 def importFile(filename):
     with open(filename, 'r') as file:
@@ -197,8 +197,15 @@ def print_ascii_tree(node_list):
     tr = LeftAligned()
     print(tr(tree))
 
-# Example usage:
-lines = importFile('log.log')
+if sys.argv[1] == None:
+    print "Please provide the log file as an argument"
+    exit()
+
+try:
+    lines = importFile(sys.argv[1])
+except:
+    print "Log file not opened!!! \n"
+    exit()
 tree, map = mapTree(lines)
 
 children = getChildren(map, NodesMissing(tree, map))
