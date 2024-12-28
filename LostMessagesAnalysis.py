@@ -11,18 +11,21 @@ def mapTree(data):
     # parse data starting from the end
     for line in (data):
         if "receiveRoutingTask()" in line:
-            #0:0:10.007614141 DEBUG (1): receiveRoutingTask():senderID= 0 , depth= 0 
             line = line.split()
             node = line[2].replace("(", "").replace(")", "").replace(":", "")
-            parent = line[4]
-            depth = line[7]
+
+            if node == '0':
+                parent = '0'
+                depth = '0'
+            else:   
+                parent = line[4]
+                depth = int(line[7])+1
 
             # print(line)
 
-            # map[node] = [parent, depth]
             # if the node is not in the map, add it
             if node not in map:
-                map[node] = {"parent": parent, "depth": depth}
+                map[node] = {"node": node, "parent": parent, "depth": depth}
 
         elif line.startswith('Node'):
             line = line.split()
@@ -31,6 +34,8 @@ def mapTree(data):
 
             # iterate through the neighbors of the node (from the 5th element to the last element)
             for nodes in line[5:]:
+                if nodes == 'and':
+                    break
                 # remove brackets and commas from the string if they exist
                 nodes = nodes.replace('[', '')
                 nodes = nodes.replace(']', '')
@@ -59,28 +64,26 @@ def NodesMissing(tree, map):
 
     return missingNodes
 
-def nodeChildren(tree, map, missingNodes):
+def getChildren(map, missingNodes):
     # the map is a dictionary with the node as the key and the parent and depth as the value. This come from the simulatins
-    # the tree is a dictionary with the node as the key and the neighbors as the value. This is as it should be
     # missingNodes is a list of nodes that are missing in the map
     # node 0 is the root node
 
     children = []
 
     # get the childred of each node as depicted in the simulation
-    for node in tree:
+    for node in map:
         if node in missingNodes:
-            continue
-
-        if node == '0':
-            children.append({'node':node,'parent': 'None', 'children': tree.get(node)})
             continue
 
         # get the parent of the node
         parent = map[node]['parent']
 
-        childrenList = tree.get(node)
-        childrenList.remove(parent)
+        # get the children of the node
+        childrenList = []
+        for child in map:
+            if map[child]['parent'] == node and child != node:
+                childrenList.append(child)
 
         # add the children to the list of children
         children.append({'node':node, 'parent':parent, 'children': childrenList})
@@ -136,17 +139,75 @@ def MessagesLost(lines, children, missingNodes):
                 else:
                     messages[node][0].append(sender)
 
-                
+from collections import OrderedDict as OD
+from asciitree import LeftAligned
+from asciitree.drawing import BoxStyle
 
 
+    
+def print_ascii_tree(node_list):
 
+    tree = OD()
+    for node in node_list:
+        tree[node['node']] = OD()
+        for child in node['children']:
+            tree[node['node']][child] = OD()
+        # next level
+        for child in node['children']:
+            for child2 in node_list:
+                if child == child2['node']:
+                    for child3 in child2['children']:
+                        tree[node['node']][child][child3] = OD()
+                    for child3 in child2['children']:
+                        for child4 in node_list:
+                            if child3 == child4['node']:
+                                for child5 in child4['children']:
+                                    tree[node['node']][child][child3][child5] = OD()
+                                for child5 in child4['children']:
+                                    for child6 in node_list:
+                                        if child5 == child6['node']:
+                                            for child7 in child6['children']:
+                                                tree[node['node']][child][child3][child5][child7] = OD()
+                                            for child7 in child6['children']:
+                                                for child8 in node_list:
+                                                    if child7 == child8['node']:
+                                                        for child9 in child8['children']:
+                                                            tree[node['node']][child][child3][child5][child7][child9] = OD()
+                                                        for child9 in child8['children']:
+                                                            for child10 in node_list:
+                                                                if child9 == child10['node']:
+                                                                    for child11 in child10['children']:
+                                                                        tree[node['node']][child][child3][child5][child7][child9][child11] = OD()
+                                                                    for child11 in child10['children']:
+                                                                        for child12 in node_list:
+                                                                            if child11 == child12['node']:
+                                                                                for child13 in child12['children']:
+                                                                                    tree[node['node']][child][child3][child5][child7][child9][child11][child13] = OD()
+                                                                                for child13 in child12['children']:
+                                                                                    for child14 in node_list:
+                                                                                        if child13 == child14['node']:
+                                                                                            for child15 in child14['children']:
+                                                                                                tree[node['node']][child][child3][child5][child7][child9][child11][child13][child15] = OD()
+                                                                                            for child15 in child14['children']:
+                                                                                                for child16 in node_list:
+                                                                                                    if child15 == child16['node']:
+                                                                                                        for child17 in child16['children']:
+                                                                                                            tree[node['node']][child][child3][child5][child7][child9][child11][child13]
+
+    tr = LeftAligned()
+    print(tr(tree))
+
+# Example usage:
 lines = importFile('log.log')
 tree, map = mapTree(lines)
 
-children = nodeChildren(tree, map, NodesMissing(tree, map))
-children = sorted(children, key = lambda i: i['node'])
+children = getChildren(map, NodesMissing(tree, map))
+children = sorted(children, key=lambda i: i['node'])
 
-MessagesLost(lines, children , NodesMissing(tree, map))
+# print("Children:", children)  # Debugging line to check children list
+
+print_ascii_tree(children)
+MessagesLost(lines, children, NodesMissing(tree, map))
 
 
 

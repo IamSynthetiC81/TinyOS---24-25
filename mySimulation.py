@@ -48,25 +48,40 @@ for line in lines:
         if int(s[1]) not in Nodes:
 			Nodes.append(int(s[1]))
 
-numberOfNodes = len(Nodes)
+Nodes.sort()
 
-for node in range(0,max(Nodes)+1):
-	m=t.getNode(node)
-	m.bootAtTime(10*t.ticksPerSecond() + node)
+print "Creating noise model..."
 
 mTosdir = os.getenv("TINYOS_ROOT_DIR")
 noiseF=open(mTosdir+"/tos/lib/tossim/noise/meyer-heavy.txt","r")
 lines= noiseF.readlines()
-
-for line in  lines:
-	str1=line.strip()
-	if str1:
-		val=int(str1)
-		for i in range(0,max(Nodes)+1):
-			t.getNode(i).addNoiseTraceReading(val)
 noiseF.close()
-for i in range(0,max(Nodes)+1):
-	t.getNode(i).createNoiseModel()
+
+print "Reading noise file..."
+
+# Limit the number of noise trace readings to reduce memory usage
+max_noise_readings = 1000
+noise_readings = []
+
+for line in lines:
+    str1 = line.strip()
+    if str1:
+        val = int(str1)
+        noise_readings.append(val)
+        if len(noise_readings) >= max_noise_readings:
+            break
+
+for i in Nodes:
+    try:
+        for val in noise_readings:
+            t.getNode(i).addNoiseTraceReading(val)
+        t.getNode(i).createNoiseModel()
+        t.getNode(i).bootAtTime(10 * t.ticksPerSecond() + i)
+    except MemoryError:
+        print "MemoryError: Could not create noise model for node ", i
+        break
+
+print "Starting simulation..."
 	
 ok=False
 #if(t.getNode(0).isOn()==True):
@@ -88,8 +103,11 @@ while(h):
 
 for i,node in enumerate(Nodes):
 	connections = []
+	noConnections = []
 	for j,altNode in enumerate(Nodes):
 		if i!=j and r.connected(node,altNode) and r.connected(altNode,node):
 			connections.append(altNode)
+		elif i!=j:
+			noConnections.append(altNode)
 	# connections contains integers of nodes connected to node. print them in the format "Node %d" is connected to Node %d, Node %d, Node %d
-	print "Node ",node," is connected to ",connections
+	print "Node ",node," is connected to ",connections," and not connected to ",noConnections
