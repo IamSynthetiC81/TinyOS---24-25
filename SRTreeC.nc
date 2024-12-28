@@ -406,7 +406,7 @@ implementation
 		// post Window();
 
 		// Start epoch timer 
-		call EpochTimer.startPeriodicAt(sim_time()/10000000000 - bootTime - jitter-curdepth*100,EPOCH_PERIOD_MILLI);
+		call EpochTimer.startPeriodicAt(sim_time()/10000000000 - bootTime - jitter-curdepth*OperationWindow,EPOCH_PERIOD_MILLI);
 	}
 
 	task void sendRoutingTask(){

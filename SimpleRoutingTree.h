@@ -16,7 +16,8 @@ enum{
 	AVG_STEP= 180,
 	TIMER_FAST_PERIOD=20,
 	OFFSET_FIX = 700,
-	JITTER = 100
+	OperationWindow = 1000,
+	JITTER = 400
 };
 
 typedef nx_struct RoutingMsg{
