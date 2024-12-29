@@ -9,6 +9,7 @@ enum{
 	AM_ROUTINGMSG=22,
 	AM_MAXMSG=24,
 	AM_AVGMSG=25,
+	AM_MICROPULSEMSG = 30, 
 	SEND_CHECK_MILLIS=70000,
 	MAX_DEPTH=200,
 	EPOCH_PERIOD_MILLI= 40*1024,
@@ -25,13 +26,6 @@ typedef nx_struct RoutingMsg{
 	nx_uint8_t cmd;
 } RoutingMsg;
 
-// typedef nx_struct NotifyParentMsg
-// {
-// 	// nx_uint16_t senderID;	// to be deprecated
-// 	nx_uint16_t parentID;
-// 	nx_uint8_t depth;
-// } NotifyParentMsg;
-
 typedef nx_struct DataAvgMsg{
 	nx_uint16_t Sum;
 	nx_uint8_t Count;
@@ -40,5 +34,10 @@ typedef nx_struct DataAvgMsg{
 typedef nx_struct DataMaxMsg{
 	nx_uint8_t data;
 } DataMaxMsg;
+
+typedef nx_struct MicroPulseMsg {
+    nx_uint8_t data;
+} MicroPulseMsg;
+
 
 #endif
