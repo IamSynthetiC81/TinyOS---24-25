@@ -58,10 +58,14 @@ bool decode(uint8_t *data, bool *phase){
 * @brief Generate a random data value within the constraints
 * @return the random data value
 */
-uint8_t random_uP_(){
+uint8_t uP_randLoad(){
     return (uint8_t) (rand() % (_uP_DATA_MAX_CONSTRAINT_ - _uP_DATA_MIN_CONSTRAINT_ + 1) + _uP_DATA_MIN_CONSTRAINT_);
 }
 
+enum {
+    uP_PHASE_0 = 0,
+    uP_PHASE_1 = 1,
+};
 
 
 

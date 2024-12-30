@@ -16,6 +16,7 @@ implementation {
     components MainC, ActiveMessageC;
     
     components new TimerMilliC() as EpochTimerC;
+    components new TimerMilliC() as uP_TransmiterTimerC;
     
     components new AMSenderC(AM_ROUTINGMSG) as RoutingSenderC;
     components new AMReceiverC(AM_ROUTINGMSG) as RoutingReceiverC;
@@ -42,6 +43,7 @@ implementation {
     SRTreeC.Boot -> MainC.Boot;
     SRTreeC.RadioControl -> ActiveMessageC;
     SRTreeC.EpochTimer -> EpochTimerC;
+    SRTreeC.uP_TransmiterTimer -> uP_TransmiterTimerC;
 
     // Routing
     SRTreeC.RoutingPacket -> RoutingSenderC.Packet;

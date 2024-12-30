@@ -118,7 +118,7 @@ def MessagesLost(lines, children, missingNodes):
                 print "Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1
             messages[node][0] = []
             continue
-        if "calculateData():" in line:
+        if "window():" in line:
             if 'No Data Received' in line:
                 line = line.split()
                 node = line[2].replace("(", "").replace(")", "").replace(":", "")
@@ -134,10 +134,7 @@ def MessagesLost(lines, children, missingNodes):
                 sender = line[7].replace(":", "")
                 data = line[-1]
 
-                if sender in messages[node][0]:
-                    print 'error'
-                else:
-                    messages[node][0].append(sender)
+                messages[node][0].append(sender)
 
 from collections import OrderedDict as OD
 from asciitree import LeftAligned
