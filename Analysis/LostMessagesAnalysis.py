@@ -1,4 +1,7 @@
 import sys
+from collections import OrderedDict as OD
+from asciitree import LeftAligned
+from asciitree.drawing import BoxStyle
 
 def importFile(filename):
     with open(filename, 'r') as file:
@@ -115,7 +118,7 @@ def MessagesLost(lines, children, missingNodes):
             if len(messages[node][0]) != len(messages[node][1]):
                 # which element is missing
                 missing = list(set(messages[node][1]) - set(messages[node][0]))
-                print "Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1
+                print("Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1)
             messages[node][0] = []
             continue
         if "window():" in line:
@@ -136,81 +139,65 @@ def MessagesLost(lines, children, missingNodes):
 
                 messages[node][0].append(sender)
 
-from collections import OrderedDict as OD
-from asciitree import LeftAligned
-from asciitree.drawing import BoxStyle
+def build_tree(node_list, root_node):
+    """
+    Recursively builds a tree from a list of nodes.
 
+    Args:
+        node_list (list): List of dictionaries representing nodes and their children.
+        root_node (str): The current node to process.
 
-    
-def print_ascii_tree(node_list):
-
+    Returns:
+        dict: The tree structure as a nested dictionary.
+    """
     tree = OD()
-    for node in node_list:
-        tree[node['node']] = OD()
-        for child in node['children']:
-            tree[node['node']][child] = OD()
-        # next level
-        for child in node['children']:
-            for child2 in node_list:
-                if child == child2['node']:
-                    for child3 in child2['children']:
-                        tree[node['node']][child][child3] = OD()
-                    for child3 in child2['children']:
-                        for child4 in node_list:
-                            if child3 == child4['node']:
-                                for child5 in child4['children']:
-                                    tree[node['node']][child][child3][child5] = OD()
-                                for child5 in child4['children']:
-                                    for child6 in node_list:
-                                        if child5 == child6['node']:
-                                            for child7 in child6['children']:
-                                                tree[node['node']][child][child3][child5][child7] = OD()
-                                            for child7 in child6['children']:
-                                                for child8 in node_list:
-                                                    if child7 == child8['node']:
-                                                        for child9 in child8['children']:
-                                                            tree[node['node']][child][child3][child5][child7][child9] = OD()
-                                                        for child9 in child8['children']:
-                                                            for child10 in node_list:
-                                                                if child9 == child10['node']:
-                                                                    for child11 in child10['children']:
-                                                                        tree[node['node']][child][child3][child5][child7][child9][child11] = OD()
-                                                                    for child11 in child10['children']:
-                                                                        for child12 in node_list:
-                                                                            if child11 == child12['node']:
-                                                                                for child13 in child12['children']:
-                                                                                    tree[node['node']][child][child3][child5][child7][child9][child11][child13] = OD()
-                                                                                for child13 in child12['children']:
-                                                                                    for child14 in node_list:
-                                                                                        if child13 == child14['node']:
-                                                                                            for child15 in child14['children']:
-                                                                                                tree[node['node']][child][child3][child5][child7][child9][child11][child13][child15] = OD()
-                                                                                            for child15 in child14['children']:
-                                                                                                for child16 in node_list:
-                                                                                                    if child15 == child16['node']:
-                                                                                                        for child17 in child16['children']:
-                                                                                                            tree[node['node']][child][child3][child5][child7][child9][child11][child13]
 
+    for node in node_list:
+        if node['node'] == root_node:
+            # Add children recursively
+            for child in node['children']:
+                tree[child] = build_tree(node_list, child)
+
+    return tree
+
+def print_ascii_tree(node_list):
+    """
+    Prints an ASCII representation of the tree.
+
+    Args:
+        node_list (list): List of dictionaries representing nodes and their children.
+    """
+    tree = OD()
+
+    # Identify root nodes (nodes that are not children of any other node)
+    all_nodes = {node['node'] for node in node_list}
+    child_nodes = {child for node in node_list for child in node['children']}
+    root_nodes = all_nodes - child_nodes
+
+    # Build the tree for each root node
+    for root in root_nodes:
+        tree[root] = build_tree(node_list, root)
+
+    # Print the tree using asciitree
     tr = LeftAligned()
     print(tr(tree))
 
 if sys.argv[1] == None:
-    print "Please provide the log file as an argument"
+    print("Please provide the log file as an argument")
     exit()
 
 try:
     lines = importFile(sys.argv[1])
 except:
-    print "Log file not opened!!! \n"
+    print("Log file not opened!!! \n")
     exit()
 tree, map = mapTree(lines)
 
 children = getChildren(map, NodesMissing(tree, map))
 children = sorted(children, key=lambda i: i['node'])
 
-# print("Children:", children)  # Debugging line to check children list
-
 print_ascii_tree(children)
+
 MessagesLost(lines, children, NodesMissing(tree, map))
 
 

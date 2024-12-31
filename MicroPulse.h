@@ -1,19 +1,19 @@
 #ifndef MICROPULSE_H
 #define MICROPULSE_H
 
-#define _uP_DATA_MIN_CONSTRAINT_ 10
+#define _uP_DATA_MIN_CONSTRAINT_ 20
 #define _uP_DATA_MAX_CONSTRAINT_ 60
 
-// /**
-// * @brief Define the Active Message ID for MicroPulse messages
-// */
-// enum {
-//     AM_MICROPULSEMSG = 30, 
-// };
+/**
+* @brief Define the Active Message ID for MicroPulse messages
+*/
+enum {
+    AM_MICROPULSEMSG = 30, 
+};
 
-// typedef nx_struct MicroPulseMsg {
-//     nx_uint8_t data;
-// } MicroPulseMsg;
+typedef nx_struct MicroPulseMsg {
+    nx_uint8_t data;
+} MicroPulseMsg;
 
 /**
 * @brief Encode the data and phase bit into the 8th bit
@@ -22,9 +22,9 @@
 * @return true if the data is within the constraints and was successfully encoded
 */
 bool encode(uint8_t *data, bool phase){
-    if (*data < _uP_DATA_MIN_CONSTRAINT_ || *data > (1<<7) - 1) {
-        return 0;
-    }
+    // if (*data < _uP_DATA_MIN_CONSTRAINT_ || *data > (1<<7) - 1) {
+    //     return 0;
+    // }
 
     // encode the phase bit into the 8th bit
     if (phase) {
@@ -44,7 +44,7 @@ bool encode(uint8_t *data, bool phase){
 */
 bool decode(uint8_t *data, bool *phase){
     // decode the phase bit from the 8th bit
-    *phase = *data & 0x80;
+    *phase = (*data >> 7) ? 1 : 0;
     *data &= 0x7F;
 
     if (*data < _uP_DATA_MIN_CONSTRAINT_ || *data > (1<<7) - 1) {
@@ -63,8 +63,8 @@ uint8_t uP_randLoad(){
 }
 
 enum {
-    uP_PHASE_0 = 0,
-    uP_PHASE_1 = 1,
+    uP_PHASE_1 = 0,
+    uP_PHASE_2 = 1,
 };
 
 
