@@ -13,10 +13,9 @@ implementation {
         components PrintfC;
     #endif
 
-    components MainC, ActiveMessageC;
+    components MainC, ActiveMessageC, MicroPulseC;
     
     components new TimerMilliC() as EpochTimerC;
-    components new TimerMilliC() as uP_TransmiterTimerC;
     
     components new AMSenderC(AM_ROUTINGMSG) as RoutingSenderC;
     components new AMReceiverC(AM_ROUTINGMSG) as RoutingReceiverC;
@@ -33,17 +32,21 @@ implementation {
     components new PacketQueueC(SENDER_QUEUE_SIZE) as DataAvgSenderQueueC;
     components new PacketQueueC(RECEIVER_QUEUE_SIZE) as DataAvgReceiverQueueC;
 
+    // MicroPulse
+    components new TimerMilliC() as uP_TransmiterTimerC;
     components new AMSenderC(AM_MICROPULSEMSG) as uPSenderC;
     components new AMReceiverC(AM_MICROPULSEMSG) as uPReceiverC;
-    components new PacketQueueC(SENDER_QUEUE_SIZE) as uPSenderQueueC;
-    components new PacketQueueC(RECEIVER_QUEUE_SIZE) as uPReceiverQueueC;
+    components new PacketQueueC(_uP_QUEUE_SIZE_) as uPSenderQueueC;
+    components new PacketQueueC(_uP_QUEUE_SIZE_) as uPReceiverQueueC;
+    
+    components new NodeInformationC() as NodeInformationC;
 
     components RandomMlcgC as RandomNumberGeneratorC;
 
     SRTreeC.Boot -> MainC.Boot;
     SRTreeC.RadioControl -> ActiveMessageC;
     SRTreeC.EpochTimer -> EpochTimerC;
-    SRTreeC.uP_TransmiterTimer -> uP_TransmiterTimerC;
+    SRTreeC.NodeInformation -> NodeInformationC;
 
     // Routing
     SRTreeC.RoutingPacket -> RoutingSenderC.Packet;
@@ -70,21 +73,25 @@ implementation {
     SRTreeC.DataAvgReceiveQueue -> DataAvgReceiverQueueC;
 
     // MicroPulse packet
-    SRTreeC.uPPacket -> uPSenderC.Packet;
-    SRTreeC.uPAMPacket -> uPSenderC.AMPacket;
-    SRTreeC.uPAMSend -> uPSenderC.AMSend;
-    SRTreeC.uPReceive -> uPReceiverC.Receive;
-    SRTreeC.uPSendQueue -> uPSenderQueueC;    
-    SRTreeC.uPReceiveQueue -> uPReceiverQueueC;
+    MicroPulseC.uP_TransmiterTimer -> uP_TransmiterTimerC;
+    MicroPulseC.originalTimer -> EpochTimerC;
+    MicroPulseC.uPPacket -> uPSenderC.Packet;
+    MicroPulseC.uPAMPacket -> uPSenderC.AMPacket;
+    MicroPulseC.uPAMSend -> uPSenderC.AMSend;
+    MicroPulseC.uPReceive -> uPReceiverC.Receive;
+    MicroPulseC.uPSendQueue -> uPSenderQueueC;
+    MicroPulseC.uPReceiveQueue -> uPReceiverQueueC;
+    MicroPulseC.NodeInformation -> NodeInformationC;
+    MicroPulseC.Boot -> MainC.Boot;
 
     SRTreeC.RandomGenerator -> RandomNumberGeneratorC;
     SRTreeC.GeneratorSeed -> RandomNumberGeneratorC.SeedInit;
 
-	#if defined(DELUGE)
-		SRTreeC.Deluge -> DelugeC;
-	#endif
+    #if defined(DELUGE)
+        SRTreeC.Deluge -> DelugeC;
+    #endif
 
-	#ifdef PRINTFDBG_MODE
-		SRTreeC.Printf -> PrintfC;
-	#endif
+    #ifdef PRINTFDBG_MODE
+        SRTreeC.Printf -> PrintfC;
+    #endif
 }

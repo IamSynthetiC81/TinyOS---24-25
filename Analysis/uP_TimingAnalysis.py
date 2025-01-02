@@ -6,7 +6,9 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
-plotDir = "plots/"
+# from LostMessageAnalysis import *
+
+plotDir = "Analysis/plots/"
 
 def parse_logfile(logfile):
     node_data = {}
@@ -34,91 +36,77 @@ def parse_logfile(logfile):
     
     return node_data
 
+
 def plot_timing_diagram(node_data):
-    fig, ax = plt.subplots()
-
-    # time diagram for each node
-    for node, data in node_data.items():
-        data = np.array(data)
-        ax.plot(data[:, 0], data[:, 1], label='Node {}'.format(node), marker='o')
-
-    ax.set_xlabel('Time (microseconds)')
-    ax.set_ylabel('Epoch')
-    ax.set_ylim(0.5, 15.5)
-    ax.set_yticks(range(1, 16))
-
-    ax.set_title('Epoch vs Time per Node')
-    ax.legend()
-    plt.grid()
-    print('Saving plot at {}'.format(plotDir + "EpochTiming"))
-    plt.savefig(plotDir + "EpochTiming.png")
-
-def plot_timing_diff_between_nodes(node_data):
+    ''' Each node should start at epoch*40-window*depth
+    find how much each node is off by for each epoch
     '''
-    Plot the difference in timing between neighbouring nodes
-    ex . node_1[epoch_1] - node_0[epoch_1], node_2[epoch_1] - node_1[epoch_1], etc.
-    '''
+    for node in node_data:
+        epochs = [x[1] for x in node_data[node]]
+        nanoseconds = [x[0] for x in node_data[node]]
 
-    fig, ax = plt.subplots()
+        plt.plot(epochs, nanoseconds, label="Node " + str(node))
 
-    prev_node = None
-
-    for node in node_data.keys():
-        if prev_node is not None:
-            node_data_1 = np.array(node_data[prev_node])
-            node_data_2 = np.array(node_data[node])
-
-            time_diff = node_data_2[:, 0] - node_data_1[:, 0]
-
-            ax.plot(node_data_1[:, 1], time_diff, label='Node {} - Node {}'.format(node, prev_node), marker='o')
-
-        prev_node = node
-
-    ax.set_xlabel('Epoch')
-    ax.set_ylabel('Time Difference')
-    ax.set_title('Time Difference between neighbouring nodes')
-    ax.legend()
-    plt.grid()
-    print('Saving plot at {}'.format(plotDir + "TimeDiffBetweenNodes"))
-    plt.savefig(plotDir + "TimeDiffBetweenNodes.png")
-
-
-
-def detect_rate_change(node_data):
-    min = None
-    max = None
-
-    for node, data in node_data.items():
-        data = np.array(data)
-        time_diff = (np.diff(data[:, 0]))
-        tdd = np.diff(time_diff).astype(int)
-
-        if max is None or np.max(time_diff) > max:
-            max = int(np.max(time_diff))
-        if min is None or np.min(time_diff) < min:
-            min = int(np.min(time_diff))
-
-        plt.plot(time_diff, label='Node {}'.format(node), marker='o')
-        plt.xlabel('Time')
-        plt.ylabel('Time Difference')
-        plt.title('Time Difference vs Time')
-
-        # print where the rate change occurs
-        rate_change = np.where(tdd != 0)
-        if len(rate_change[0]) > 0:
-            # print('Node {}: MicroPulse effect detected at {}'.format(node, rate_change[0] + 1)) 
-            # write this in green
-            print('\033[92m' + 'Node {}'.format(node, rate_change[0] + 1) + '\033[0m'+ ': MicroPulse effect detected at {}')
-        else:
-            # print in red
-            print('\033[91m' + 'Node {}'.format(node, rate_change[0] + 1) + '\033[0m' + ': No MicroPulse effect detected')
-
+    plt.xlabel("Epoch")
+    plt.ylabel("Time (ns)")
+    plt.title("Time vs Epoch")
     plt.legend()
-    plt.ylim(min*0.9, max*1.1)
-    plt.yticks(range(min, max + 1))
     plt.grid()
-    print('Saving plot at {}'.format(plotDir + "rate_change.png"))
-    plt.savefig(plotDir + "rate_change.png")
+    plt.savefig(plotDir + "Time_vs_Epoch.png")
+    plt.clf()
+
+def plot_epoch_start(node_data):
+    '''plot for each epoch when each node starts'''
+    # each epoch is 40s. Plot the start time of each node for each epoch
+    for node in node_data:
+        epochs = [x[1] for x in node_data[node]]
+        nanoseconds = [x[0] for x in node_data[node]]
+        
+
+
+    dataset = []
+    maxEpoch = max(epochs) # should be 15
+
+    # assign a colour to each node dynamicaly
+    colours = plt.cm.rainbow(np.linspace(0, 1, len(node_data)))
+
+
+    for epoch in range(1,maxEpoch):
+        for node in node_data:
+            for data in node_data[node]:
+                # if data[0] > (epoch+1)*40*1e9 :
+                #     print("Node " + str(node) + " started at " + str(data[0]) + " in epoch " + str(data[1]))
+                #     break
+                if data[1] == epoch:
+                    time = data[0] - (epoch)*40*1e9
+                    data = {'node': node, 'epoch': epoch, 'time': time}
+                    dataset.append(data)
+                    break
+
+    
+    # sort the data into timesets for each node
+    timesets = {}
+    for node in dataset:
+        if node['node'] not in timesets:
+            timesets[node['node']] = []
+        timesets[node['node']].append(node)
+
+    for node in timesets:
+        timesets[node].sort(key=lambda x: x['epoch'])
+
+    # plot the data
+    for i,node in enumerate(timesets):
+        time = [x['time'] for x in timesets[node]]
+        epoch = [x['epoch'] for x in timesets[node]]
+        plt.plot(epoch, time, 'o', label="Node " + str(node), color=colours[i])
+
+    plt.xlabel("Node")
+    plt.ylabel("Time (ns)")
+    plt.title("Time vs Node")
+    plt.legend(loc='center left', bbox_to_anchor=(0.9, 0.5))
+    plt.grid()
+    plt.savefig(plotDir + "Node Timings.png")
+    plt.clf()
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -134,6 +122,5 @@ if __name__ == "__main__":
     logfile = sys.argv[1]
     node_data = parse_logfile(logfile)
 
-    detect_rate_change(node_data)
     plot_timing_diagram(node_data)
-    plot_timing_diff_between_nodes(node_data)
+    plot_epoch_start(node_data)
