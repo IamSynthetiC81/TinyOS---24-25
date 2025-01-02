@@ -92,10 +92,19 @@ def getChildren(map, missingNodes):
         children.append({'node':node, 'parent':parent, 'children': childrenList})
     return children
 
-def MessagesLost(lines, children, missingNodes):
+def MessagesLost(lines, children, missingNodes, logfile = None):
     # lines is the data from the log file
     # children is the a list of dictionaries with the node, parent and children
     # find if any messages from the children are lost
+
+    if logfile != None:
+        print("Printing the messages lost to the log file")
+        try :
+            f = open(logfile, 'a')
+            f.write("\nPrinting the messages lost :\n")
+        except:
+            print("Log file not opened!!! \n")
+            exit()
 
     messages = {}
 
@@ -118,7 +127,11 @@ def MessagesLost(lines, children, missingNodes):
             if len(messages[node][0]) != len(messages[node][1]):
                 # which element is missing
                 missing = list(set(messages[node][1]) - set(messages[node][0]))
-                print("Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1)
+                if len(missing) > 0:
+                    print("Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1)
+
+                    if logfile != None:
+                        f.write("Node %s is missing messages from %s on epoch %d\n" % (node, missing, epoch-1))
             messages[node][0] = []
             continue
         if "window():" in line:
@@ -136,6 +149,8 @@ def MessagesLost(lines, children, missingNodes):
                 node = line[2].replace("(", "").replace(")", "").replace(":", "")
                 sender = line[7].replace(":", "")
                 data = line[-1]
+
+                # f.write("Node %s received data from %s: %s\n" % (node, sender, data))
 
                 messages[node][0].append(sender)
 
@@ -160,13 +175,22 @@ def build_tree(node_list, root_node):
 
     return tree
 
-def print_ascii_tree(node_list):
+def print_ascii_tree(node_list, logfile = None):
     """
     Prints an ASCII representation of the tree.
 
     Args:
         node_list (list): List of dictionaries representing nodes and their children.
     """
+
+    if logfile != None:
+        print("Printing the tree to the log file")
+        try :
+            f = open(logfile, 'a')
+            f.write("\nPrinting the tree :\n")
+        except:
+            print("Log file not opened!!! \n")
+            exit()
     tree = OD()
 
     # Identify root nodes (nodes that are not children of any other node)
@@ -180,25 +204,53 @@ def print_ascii_tree(node_list):
 
     # Print the tree using asciitree
     tr = LeftAligned()
+    if logfile != None:
+        # tr = LeftAligned(draw=BoxStyle(gfx = BoxStyle.GFX_DOUBLE, horiz_len=1))
+        f.write(tr(tree))
+    f.write("\n")
+
     print(tr(tree))
 
-if sys.argv[1] == None:
-    print("Please provide the log file as an argument")
-    exit()
+def runAnalysis(filename):
+    if filename == None:
+        print("Please provide the log file as an argument")
+        exit()
 
-try:
-    lines = importFile(sys.argv[1])
-except:
-    print("Log file not opened!!! \n")
-    exit()
-tree, map = mapTree(lines)
+    try:
+        lines = importFile(filename)
+    except:
+        print("Log file not opened!!! \n")
+        exit()
+    tree, map = mapTree(lines)
+    
 
-children = getChildren(map, NodesMissing(tree, map))
-children = sorted(children, key=lambda i: i['node'])
+    children = getChildren(map, NodesMissing(tree, map))
+    children = sorted(children, key=lambda i: i['node'])
 
-print_ascii_tree(children)
+    print("Tree: ", tree)
+    print_ascii_tree(children, filename)
 
-MessagesLost(lines, children, NodesMissing(tree, map))
+    print("\nMessages Lost: ")
+    MessagesLost(lines, children, NodesMissing(tree, map), filename)
+
+if __name__ == "__main__":
+    if sys.argv[1] == None:
+        print("Please provide the log file as an argument")
+        exit()
+
+    try:
+        lines = importFile(sys.argv[1])
+    except:
+        print("Log file not opened!!! \n")
+        exit()
+    tree, map = mapTree(lines)
+
+    children = getChildren(map, NodesMissing(tree, map))
+    children = sorted(children, key=lambda i: i['node'])
+
+    print_ascii_tree(children)
+
+    MessagesLost(lines, children, NodesMissing(tree, map))
 
 
 

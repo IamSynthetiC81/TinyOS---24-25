@@ -80,6 +80,7 @@ implementation {
     MicroPulseC.uPSendQueue -> uPSenderQueueC;
     MicroPulseC.uPReceiveQueue -> uPReceiverQueueC;
     MicroPulseC.NodeInformation -> NodeInformationC;
+    MicroPulseC.Boot -> MainC.Boot;
 
     SRTreeC.RandomGenerator -> RandomNumberGeneratorC;
     SRTreeC.GeneratorSeed -> RandomNumberGeneratorC.SeedInit;

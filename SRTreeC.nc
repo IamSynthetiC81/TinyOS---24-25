@@ -272,7 +272,7 @@ implementation
 	task void ApplyWindowJitter(){
 		uint32_t nextTimeFiredAt;
 		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
-		nextTimeFiredAt = (epochCounter+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000000 + jitter;
+		nextTimeFiredAt = (epochCounter+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000 + jitter;
 
 		dbg("SRTreeC", "ApplyWindowJitter(): NextTimeFiredAt = %d\n", nextTimeFiredAt);
 		call EpochTimer.startPeriodicAt(nextTimeFiredAt, EPOCH_PERIOD_MILLI);
@@ -385,9 +385,28 @@ implementation
 	
 	// Start Epoch
 	task void startEpoch(){
+		int32_t t0;
+
+		/**
+			Set a periodic timer to repeat every dt time units. Replaces any
+			current timer settings. The <code>fired</code> will be signaled every
+			dt units (first event at t0+dt units). Periodic timers set in the past
+			will get a bunch of events in succession, until the timer "catches up".*
+			<p>Because the current time may wrap around, it is possible to use
+			values of t0 greater than the <code>getNow</code>'s result. These
+			values represent times in the past, i.e., the time at which getNow()
+			would last of returned that value.*
+			@param t0 Base time for timer.
+			@param dt Time until the timer fires.
+			command void startPeriodicAt(uint32_t t0, uint32_t dt);
+		*/
+
 		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
-		dbg("SRTreeC", "startEpoch(): Timer started at %d\n", -sim_time()/10000000000 -curdepth*OperationWindow);
-		call EpochTimer.startPeriodicAt(-sim_time()/10000000000 - jitter-2*(curdepth+1)*OperationWindow,EPOCH_PERIOD_MILLI);
+
+		t0 = -(sim_time()*1.024/10000000 + jitter+(curdepth+1)*OperationWindow);
+
+		dbg("SRTreeC", "startEpoch(): Timer started at %d\n", t0);
+		call EpochTimer.startPeriodicAt(t0,EPOCH_PERIOD_MILLI);
 	}
 
 	task void sendRoutingTask(){

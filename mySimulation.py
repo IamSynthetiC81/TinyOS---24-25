@@ -4,6 +4,9 @@ from TOSSIM import *
 import sys ,os
 import random
 
+import LostMessages
+import uP_Timing
+
 if len(sys.argv) < 2:
     print "Usage: python mySimulation.py <topology file>"
     sys.exit(1)
@@ -19,11 +22,21 @@ if topo is None:
     sys.exit(1)
 
 t=Tossim([])
-f=sys.stdout
-# f = open("logfile.txt", "w")
-SIM_END_TIME= 640 * t.ticksPerSecond()
 
-print "TicksPerSecond : ", t.ticksPerSecond(),"\n"
+if len(sys.argv) < 3:
+    print "Usage: python mySimulation.py <topology file> <log file>"
+    sys.exit(1)
+else:
+    try:
+        f = open(sys.argv[2], "w")
+    except:
+        print "Log file not opened!!! \n"
+        sys.exit(1)
+
+SIM_END_TIME= 600 * t.ticksPerSecond()
+
+# print "TicksPerSecond : ", t.ticksPerSecond(),"\n"
+f.write("TicksPerSecond : %d\n" % t.ticksPerSecond())
 
 t.addChannel("Boot",f)
 t.addChannel("RoutingMsg",f)
@@ -40,7 +53,9 @@ Nodes = []
 for line in lines:
     s = line.split()
     if len(s) > 0:
-        print " ", s[0], " ", s[1], " ", s[2]
+        # print " ", s[0], " ", s[1], " ", s[2]
+        f.write(" %s %s %s\n" % (s[0], s[1], s[2]))
+
         r.add(int(s[0]), int(s[1]), float(s[2]))
 
         if int(s[0]) not in Nodes:
@@ -79,6 +94,7 @@ for i in Nodes:
         t.getNode(i).bootAtTime(10 * t.ticksPerSecond() + i)
     except MemoryError:
         print "MemoryError: Could not create noise model for node ", i
+        f.write("MemoryError: Could not create noise model for node %d\n" % i)
         break
 
 print "Starting simulation..."
@@ -93,6 +109,7 @@ while(h):
 		#print h
 	except:
 		print sys.exc_info()
+        # f.write("Exception occurred\n")
 #		e.print_stack_trace()
 
 	if (t.time()>= SIM_END_TIME):
@@ -109,5 +126,15 @@ for i,node in enumerate(Nodes):
 			connections.append(altNode)
 		elif i!=j:
 			noConnections.append(altNode)
-	# connections contains integers of nodes connected to node. print them in the format "Node %d" is connected to Node %d, Node %d, Node %d
-	print "Node ",node," is connected to ",connections," and not connected to ",noConnections
+	f.write("Node %d is connected to %s and not connected to %s\n" % (node, connections, noConnections))
+    # connections contains integers of nodes connected to node. print them in the format "Node %d" is connected to Node %d, Node %d, Node %d
+	# print "Node ",node," is connected to ",connections," and not connected to ",noConnections
+    
+f.flush()
+f.close()
+
+#  wait for the file to close
+while f.closed == False:
+    pass
+print "Running analysis"
+LostMessages.runAnalysis(sys.argv[2])

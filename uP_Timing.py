@@ -182,23 +182,25 @@ def print_ascii_tree(node_list):
     tr = LeftAligned()
     print(tr(tree))
 
-if sys.argv[1] == None:
-    print("Please provide the log file as an argument")
-    exit()
 
-try:
-    lines = importFile(sys.argv[1])
-except:
-    print("Log file not opened!!! \n")
-    exit()
-tree, map = mapTree(lines)
+def runAnalysis(filename):        
+    if filename == None:
+        print("Please provide the log file as an argument")
+        exit()
 
-children = getChildren(map, NodesMissing(tree, map))
-children = sorted(children, key=lambda i: i['node'])
+    try:
+        lines = importFile(filename)
+    except:
+        print("Log file not opened!!! \n")
+        exit()
+    tree, map = mapTree(lines)
 
-print_ascii_tree(children)
+    children = getChildren(map, NodesMissing(tree, map))
+    children = sorted(children, key=lambda i: i['node'])
 
-MessagesLost(lines, children, NodesMissing(tree, map))
+    print_ascii_tree(children)
+
+    MessagesLost(lines, children, NodesMissing(tree, map))
 
 
 

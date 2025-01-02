@@ -2,6 +2,8 @@
 
 module MicroPulseC
 {
+    uses interface Boot;
+
     uses interface Packet as uPPacket;
 	uses interface AMPacket as uPAMPacket;
 	uses interface AMSend as uPAMSend;
@@ -22,18 +24,23 @@ module MicroPulseC
     uint16_t uP_node_load 	= 0;
     uint16_t uP_parrent_load = 0;
     uint16_t uP_child_load 	= 0;
-    bool 	uP_Phase 		= uP_PHASE_1;
+    bool 	 uP_Phase 		= uP_PHASE_1;
 
     uint8_t curdepth;
     uint8_t parentID;
 
     uint8_t epochCounter = 0;
+    uint32_t bootTime = 0;
 
     bool uP_Tasking = TRUE;
+    
+    event void Boot.booted(){
+        bootTime = sim_time()/10000000000;
+        dbg("SRTreeC", "MicroPulseC booted at %d\n", bootTime);
+    }
 
     event void originalTimer.fired(){
         epochCounter++;
-        dbg("SRTreeC", "originalTimer.fired(): epochCounter = %d at %d\n", epochCounter, call originalTimer.getNow());
         if (epochCounter == START_AT_EPOCH){
             dbg("SRTreeC", "MicroPulseC booted!!!\n");
             parentID = call NodeInformation.getParent();
@@ -62,7 +69,7 @@ module MicroPulseC
 
         
 
-        if(!uP_Tasking && uP_Phase == uP_PHASE_1){
+        if(uP_Phase == uP_PHASE_2 && msource != parentID){
             dbg("SRTreeC", "uPReceive.receive(): Denied uPkt from %u\n", msource);
             return msg;
         }
@@ -252,7 +259,7 @@ module MicroPulseC
             mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
 
             // @TODO : Question --> Does the root node need a random uP_node_load value or as SINK it has 0 load ?
-            uP_node_load =  uP_randLoad();
+            uP_node_load = uP_randLoad();
             data = uP_node_load + max;
 
             dbg("SRTreeC", "uPStart(): uP_node_load = %d and uP_child_load = %d\n", uP_node_load, uP_child_load);
@@ -307,13 +314,13 @@ module MicroPulseC
     }	
 
     task void uP_TimerTune(){
-        uint32_t epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI - sim_time()/10000000000);
+        uint32_t epoch5_start;
         uint32_t window_lower_lim;
-        dbg("SRTreeC", "uP_TimerTune(): getNow() = %d\n",call originalTimer.getNow());
+    
+        epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI) - bootTime*1024;
+        window_lower_lim = epoch5_start - (uP_parrent_load + uP_node_load)*1.024;
         dbg("SRTreeC", "uP_TimerTune(): epoch5_start = %d\nNode load = %d, Parrent load = %d, Child load = %d\n", epoch5_start, uP_node_load, uP_parrent_load, uP_child_load);
 
-        window_lower_lim = epoch5_start - uP_parrent_load - uP_node_load;
-        
         call originalTimer.startPeriodicAt(window_lower_lim, EPOCH_PERIOD_MILLI);
     }	
 }
