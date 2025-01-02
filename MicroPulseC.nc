@@ -2,7 +2,6 @@
 
 module MicroPulseC
 {
-    uses interface Boot;
     uses interface Packet as uPPacket;
 	uses interface AMPacket as uPAMPacket;
 	uses interface AMSend as uPAMSend;
@@ -12,7 +11,6 @@ module MicroPulseC
 
     uses interface NodeInformation as NodeInformation;
 
-	uses interface Timer<TMilli> as uP_TransmiterTimer;
     uses interface Timer<TMilli> as originalTimer;
 } implementation {
     task void uPsendTask();
@@ -29,19 +27,18 @@ module MicroPulseC
     uint8_t curdepth;
     uint8_t parentID;
 
-    bool FLAG = FALSE;
-    bool uP_ACTIVE = FALSE;
+    uint8_t epochCounter = 0;
 
-    event void Boot.booted(){
-       dbg("SRTreeC", "MicroPulseC booted!!!\n");
-       call uP_TransmiterTimer.startPeriodicAt(-sim_time()/10000000000, (START_AT_EPOCH-1) * EPOCH_PERIOD_MILLI);
-    }
-
+    bool uP_Tasking = TRUE;
 
     event void originalTimer.fired(){
-        if (FLAG){
+        epochCounter++;
+        dbg("SRTreeC", "originalTimer.fired(): epochCounter = %d at %d\n", epochCounter, call originalTimer.getNow());
+        if (epochCounter == START_AT_EPOCH){
+            dbg("SRTreeC", "MicroPulseC booted!!!\n");
+            parentID = call NodeInformation.getParent();
+            curdepth = call NodeInformation.getDepth();
             post uPStart();
-            FLAG = FALSE;
         }
     }
 
@@ -49,8 +46,8 @@ module MicroPulseC
 		error_t enqueueDone;
 		message_t tmp;
 		MicroPulseMsg* mpkt;
-		uint16_t msource;
-		uint16_t data;
+		uint16_t msource, data;
+
 
 		// Reject message if it hasn't the appropriate size
 		if(len!=sizeof(MicroPulseMsg)){
@@ -58,15 +55,19 @@ module MicroPulseC
 			return msg;
 		}
 
+        mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(msg, len));
 		msource = call uPAMPacket.source(msg);
-
-		// Get the data from the message
-		mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(msg, len));
         data = mpkt->data;
-		
-        // dbg("SRTreeC", "uPReceive.receive(): Received data = %x\n", data);
-		decode(&data, &uP_Phase);
-        // dbg("SRTreeC", "uPReceive.receive(): Decoded data = %x with %d phase\n", data, uP_Phase);
+        decode(&data, &uP_Phase);
+
+        
+
+        if(!uP_Tasking && uP_Phase == uP_PHASE_1){
+            dbg("SRTreeC", "uPReceive.receive(): Denied uPkt from %u\n", msource);
+            return msg;
+        }
+
+        dbg("SRTreeC", "uPReceive.receive(): uPulse packet received from %d\n", msource);
 
 		if (uP_Phase == uP_PHASE_2){
 			/*
@@ -74,12 +75,12 @@ module MicroPulseC
 				2. send data to children
 			*/
 
-			if (call uPAMPacket.source(msg) != call NodeInformation.getParent()){
-                dbg("SRTreeC", "MicroPulse packet rejected!!!  from %u \n", msource);
+			if (msource != call NodeInformation.getParent()){
+                dbg("SRTreeC", "uPulse packet rejected!!!  from %u \n", msource);
 				return msg;
 			}
 
-			dbg("SRTreeC", "MicroPulse packet containing [%d] received!!!  from %u\n", data, msource);
+			dbg("SRTreeC", "uPulse phase 2 packet containing [%d] received!!!  from %u \n", data, msource);
 
 			uP_parrent_load = data;
 			
@@ -91,7 +92,6 @@ module MicroPulseC
 				mpkt->data = data; 
 			}
 			
-			// enque the message to uPSendQueue
 			call uPAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
 			call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
 
@@ -102,10 +102,8 @@ module MicroPulseC
 			} else {
 				dbg("SRTreeC", "uPReceive.receive(): uPMsg failed to be enqueued in uPSendQueue!!!\n");
 			}
-
 		} else {
-			dbg("SRTreeC", "MicroPulse packet containing [%d] received!!!  from %u \n", data, msource);
-			// Copy the received message in tmp and enqueue it to uPReceiveQueue
+			dbg("SRTreeC", "uP phase 1 packet containing [%d] received!!!  from %u \n", data, msource);
 
             atomic{
 				memcpy(&tmp,msg,sizeof(message_t));
@@ -124,66 +122,7 @@ module MicroPulseC
 	}
 
 	event void uPAMSend.sendDone(message_t * msg , error_t err){
-		// dbg("SRTreeC", "A MicroPulse package sent... %s \n",(err==SUCCESS)?"True":"False");
-		// setLostMeasurementSendTask(err==SUCCESS);
-	}
-
-	event void uP_TransmiterTimer.fired(){
-        // call originalTimer.stop();
-        call uP_TransmiterTimer.stop();
-        parentID = call NodeInformation.getParent();
-        curdepth = call NodeInformation.getDepth();
-
-        FLAG = TRUE;
-
-        dbg("SRTreeC", "uP_TransmiterTimer.fired(): curdepth = %d, parentID = %d\n", curdepth, parentID);
-
-        // post uPStart();
-
-        // call uP_TransmiterTimer.startPeriodicAt(EPOCH_PERIOD_MILLI-(curdepth*2)*OperationWindow), EPOCH_PERIOD_MILLI);
-        return;
-
-
-		// message_t tmp;
-		// error_t err;
-		// MicroPulseMsg* mpkt;
-		// uint8_t data;
-		
-		// // Check if the uPSendQueue is full
-		// if(call uPSendQueue.empty()){
-		// 	dbg("uP_TransmiterTimer", "uP_SendQueue is empty...\n");
-		// 	return;
-		// }
-
-		// // Get a pointer to the payload of the temporary message
-		// mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
-
-		// if(mpkt==NULL){
-		// 	dbg("SRTreeC","uP_TransmiterTimer.fired(): No valid payload... \n");
-		// 	return;
-		// }
-		// data = uP_node_load;
-		// if (!encode(&data, uP_Phase)){
-		// 	dbg("SRTreeC", "uP_TransmiterTimer.fired(): Encoding failed!!!\n");
-		// 	return;
-		// }
-
-		// // Set the value of the message
-		// atomic{
-		// 	mpkt->data = data;
-		// }
-
-		// call uPAMPacket.setDestination(&tmp, parentID);
-		// call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
-
-		// // send the message
-		// err = call uPAMSend.send(parentID, &tmp, sizeof(MicroPulseMsg));
-
-		// if(err == SUCCESS){
-		// 	dbg("SRTreeC", "uP_TransmiterTimer.fired(): Send returned success!!!\n");
-		// }else{
-		// 	dbg("SRTreeC", "uP_TransmiterTimer.fired(): Send failed!!!\n");
-		// }
+		uP_Tasking = FALSE;
 	}
 
     task void uPsendTask(){
@@ -221,19 +160,25 @@ module MicroPulseC
         } else {
             dbg("SRTreeC","send failed!!!\n");
         }
+        uP_Tasking = TRUE;
     }
 
     task void uP_RootHandler(){
         // send data to children
-        uint16_t pkt;
+        uint16_t pkt, bare_data;
         message_t tmp;
         MicroPulseMsg* mpkt;
         error_t err;
 
         mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
-        pkt = uP_node_load + uP_parrent_load;
+        // pkt = uP_node_load + uP_parrent_load;
+        pkt = uP_node_load + uP_child_load;
+        bare_data = pkt;
 
+        uP_Phase = uP_PHASE_2;
+        dbg("SRTreeC", "Encoded data = %d, %d\n", pkt, uP_PHASE_2);
         encode(&pkt,uP_PHASE_2);
+        dbg("SRTreeC", "Encoded data = %d\n", pkt);
 
         atomic {
             mpkt->data = pkt;
@@ -242,7 +187,7 @@ module MicroPulseC
         call uPAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
         call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
 
-        dbg("SRTreeC", "uP_RootHandler(): Sending data to children: %d\n", pkt-(1<<7));
+        dbg("SRTreeC", "uP_RootHandler(): Sending data to children: %d\n", bare_data);
 
         if (call uPSendQueue.enqueue(tmp) == SUCCESS) {
             dbg("SRTreeC", "uP_RootHandler(): MicroPulseMsg enqueued in SendingQueue successfully!!!\n");
@@ -269,14 +214,14 @@ module MicroPulseC
                 radio_uP_SendPkt = call uPReceiveQueue.dequeue();
             }
             
-            // @TODO : Program enters this block, and the message is not received
-            // if (len != sizeof(MicroPulseMsg)) {
-            // 	dbg("SRTreeC", "uPStart(): Unknown message received!!!\n");
-            // 	continue;
-            // }
-
             len = call uPPacket.payloadLength(&radio_uP_SendPkt);
             msource = call uPAMPacket.source(&radio_uP_SendPkt);
+
+            //@TODO : Program enters this block, and the message is not received
+            if (len != sizeof(MicroPulseMsg)) {
+            	dbg("SRTreeC", "uPStart(): Unknown message received!!!\n");
+            	continue;
+            }
 
             mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&radio_uP_SendPkt, len));
 
@@ -293,6 +238,8 @@ module MicroPulseC
             dbg("SRTreeC", "uPStart(): uPulse packet received from %d with data = %d and phase %d\n", msource, data, uP_Phase);
         }
 
+        uP_Tasking = FALSE;
+
         if (uP_Phase == uP_PHASE_1){
             /*
                 2. Generate a random uP_node_load value
@@ -304,7 +251,7 @@ module MicroPulseC
 
             mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
 
-            // @TODO : Question --> Does the root node need a random uP_node_load value?
+            // @TODO : Question --> Does the root node need a random uP_node_load value or as SINK it has 0 load ?
             uP_node_load =  uP_randLoad();
             data = uP_node_load + max;
 
@@ -320,7 +267,7 @@ module MicroPulseC
                     mpkt->data = data;
                 }
 
-                call uPAMPacket.setDestination(&tmp, parentID);
+                call uPAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
                 call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
 
                 // enqueue the message
@@ -340,35 +287,8 @@ module MicroPulseC
             */
 
             uP_parrent_load = data;
-
-            // call EpochTimer.startPeriodicAt(sim_time()/10000000000 - bootTime - jitter-curdepth*OperationWindow,EPOCH_PERIOD_MILLI);
-            // epoch6_start = (sim_time()/10000000000 - bootTime) + jitter + curdepth*OperationWindow;
-
-            // if(TOS_NODE_ID == 0){
-            //     window_lower_lim = epoch6_start + EPOCH_PERIOD_MILLI - uP_node_load;
-            //     window_upper_lim = epoch6_start + EPOCH_PERIOD_MILLI;
-            // } else {
-            //     window_lower_lim = epoch6_start + EPOCH_PERIOD_MILLI - uP_parrent_load- uP_node_load;
-            //     window_upper_lim = epoch6_start + EPOCH_PERIOD_MILLI - uP_parrent_load;
-            // }
-            
-            // @TODO : tune the window timer so that it fires when the children finish their tasks
-            // epoch must start after the children finish their tasks at the lower limit of the window
-            // call EpochTimer.startPeriodicAt(window_lower_lim, EPOCH_PERIOD_MILLI);
-            // call uP_TransmiterTimer.startPeriodicAt(window_upper_lim, EPOCH_PERIOD_MILLI);
-            
             mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
 
-            // encode(&data, 1);		// redundant
-            // if (TOS_NODE_ID == 0){
-            //     atomic {
-            //         mpkt->data = max; //max
-            //     }
-            // } else {
-            //     atomic {
-            //         mpkt->data = uP_parrent_load-uP_node_load; //parent load
-            //     }
-            // }
             atomic{
                 mpkt->data = uP_parrent_load + uP_node_load;
             }
@@ -387,19 +307,13 @@ module MicroPulseC
     }	
 
     task void uP_TimerTune(){
-        uint32_t epoch6_start = ((START_AT_EPOCH+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000000);
-        uint32_t window_lower_lim, window_upper_lim;
+        uint32_t epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI - sim_time()/10000000000);
+        uint32_t window_lower_lim;
+        dbg("SRTreeC", "uP_TimerTune(): getNow() = %d\n",call originalTimer.getNow());
+        dbg("SRTreeC", "uP_TimerTune(): epoch5_start = %d\nNode load = %d, Parrent load = %d, Child load = %d\n", epoch5_start, uP_node_load, uP_parrent_load, uP_child_load);
 
-        uP_ACTIVE = TRUE;
-
-        dbg("SRTreeC", "uP_TimerTune(): epoch6_start = %d\nNode load = %d, Parrent load = %d, Child load = %d\n", epoch6_start, uP_node_load, uP_parrent_load, uP_child_load);
-
-        window_lower_lim = epoch6_start + EPOCH_PERIOD_MILLI - uP_parrent_load- uP_node_load+50;
-        window_upper_lim = epoch6_start + EPOCH_PERIOD_MILLI - uP_parrent_load;
+        window_lower_lim = epoch5_start - uP_parrent_load - uP_node_load;
         
         call originalTimer.startPeriodicAt(window_lower_lim, EPOCH_PERIOD_MILLI);
-        // call uP_TransmiterTimer.startPeriodicAt(window_upper_lim, EPOCH_PERIOD_MILLI);
-
-        call uP_TransmiterTimer.stop();
     }	
 }

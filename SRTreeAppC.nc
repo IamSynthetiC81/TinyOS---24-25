@@ -33,7 +33,6 @@ implementation {
     components new PacketQueueC(RECEIVER_QUEUE_SIZE) as DataAvgReceiverQueueC;
 
     // MicroPulse
-    components new TimerMilliC() as uP_TransmiterTimerC;
     components new AMSenderC(AM_MICROPULSEMSG) as uPSenderC;
     components new AMReceiverC(AM_MICROPULSEMSG) as uPReceiverC;
     components new PacketQueueC(_uP_QUEUE_SIZE_) as uPSenderQueueC;
@@ -73,7 +72,6 @@ implementation {
     SRTreeC.DataAvgReceiveQueue -> DataAvgReceiverQueueC;
 
     // MicroPulse packet
-    MicroPulseC.uP_TransmiterTimer -> uP_TransmiterTimerC;
     MicroPulseC.originalTimer -> EpochTimerC;
     MicroPulseC.uPPacket -> uPSenderC.Packet;
     MicroPulseC.uPAMPacket -> uPSenderC.AMPacket;
@@ -82,7 +80,6 @@ implementation {
     MicroPulseC.uPSendQueue -> uPSenderQueueC;
     MicroPulseC.uPReceiveQueue -> uPReceiverQueueC;
     MicroPulseC.NodeInformation -> NodeInformationC;
-    MicroPulseC.Boot -> MainC.Boot;
 
     SRTreeC.RandomGenerator -> RandomNumberGeneratorC;
     SRTreeC.GeneratorSeed -> RandomNumberGeneratorC.SeedInit;

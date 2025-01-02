@@ -53,6 +53,7 @@ def plot_timing_diagram(node_data):
     plt.legend()
     plt.grid()
     plt.savefig(plotDir + "Time_vs_Epoch.png")
+
     plt.clf()
 
 def plot_epoch_start(node_data):
@@ -61,9 +62,6 @@ def plot_epoch_start(node_data):
     for node in node_data:
         epochs = [x[1] for x in node_data[node]]
         nanoseconds = [x[0] for x in node_data[node]]
-        
-
-
     dataset = []
     maxEpoch = max(epochs) # should be 15
 
@@ -100,13 +98,28 @@ def plot_epoch_start(node_data):
         epoch = [x['epoch'] for x in timesets[node]]
         plt.plot(epoch, time, 'o', label="Node " + str(node), color=colours[i])
 
-    plt.xlabel("Node")
+    plt.xlabel("Epoch")
     plt.ylabel("Time (ns)")
     plt.title("Time vs Node")
     plt.legend(loc='center left', bbox_to_anchor=(0.9, 0.5))
     plt.grid()
     plt.savefig(plotDir + "Node Timings.png")
     plt.clf()
+
+    # zoom in on the 6:end epochs
+    for i,node in enumerate(timesets):
+        time = [x['time'] for x in timesets[node] if x['epoch'] > 5]
+        epoch = [x['epoch'] for x in timesets[node] if x['epoch'] > 5]
+        plt.plot(epoch, time, 'o', label="Node " + str(node), color=colours[i])
+
+    plt.xlabel("Epoch")
+    plt.ylabel("Time (ns)")
+    plt.title("Time vs Node")
+    plt.legend(loc='center left', bbox_to_anchor=(0.9, 0.5))
+    plt.grid()
+    plt.savefig(plotDir + "Node Timings Zoomed.png")
+    plt.clf()
+    
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

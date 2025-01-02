@@ -163,9 +163,6 @@ implementation
 
 	event void Boot.booted(){
 		dbg("Boot", "Booted\n");
-
-		bootTime = sim_time()/10000000000;
-
 		// Start the radio control interface to enable communication
 		call RadioControl.start();
 		
@@ -211,8 +208,6 @@ implementation
 		if (err == SUCCESS) {
 			dbg("Radio" , "Radio initialized successfully!!!\n");		
 			if (TOS_NODE_ID==0){
-				// @TODO : send routing message, and start the epoch timer
-				// call RoutingMsgTimer.startOneShot(500);
 				post SendRoutingMessage();
 				post startEpoch();
 			}
@@ -233,7 +228,7 @@ implementation
 		RoutingMsg* mrpkt;
 		dbg("SRTreeC", "SendRoutingMessage: radioBusy = %s \n",(RoutingSendBusy)?"True":"False");
 		if (TOS_NODE_ID==0){
-			dbg("SRTreeC", "\n\t\t\t\t\t\t\t##################################### \n");
+			dbg("SRTreeC", "\n							              ##################################### \n");
 			dbg("SRTreeC", "#######   ROUTING    ############## \n");
 			dbg("SRTreeC", "#####################################\n");
 		}
@@ -276,7 +271,7 @@ implementation
 
 	task void ApplyWindowJitter(){
 		uint32_t nextTimeFiredAt;
-		jitter = (call RandomGenerator.rand32() % JITTER);
+		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
 		nextTimeFiredAt = (epochCounter+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000000 + jitter;
 
 		dbg("SRTreeC", "ApplyWindowJitter(): NextTimeFiredAt = %d\n", nextTimeFiredAt);
@@ -362,8 +357,6 @@ implementation
 
 		// Check if the enqueue operation was successful 
 		if(enqueueDone != SUCCESS) dbg("SRTreeC","DataMaxMsg enqueue failed!!! \n");
-		
-		dbg("SRTreeC", "### RoutingReceive.receive() end ##### \n");
 		return msg;
 	}
 
@@ -392,8 +385,9 @@ implementation
 	
 	// Start Epoch
 	task void startEpoch(){
-		jitter = (call RandomGenerator.rand32() % JITTER);
-		call EpochTimer.startPeriodicAt(sim_time()/10000000000 - bootTime - jitter-2*curdepth*OperationWindow,EPOCH_PERIOD_MILLI);
+		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
+		dbg("SRTreeC", "startEpoch(): Timer started at %d\n", -sim_time()/10000000000 -curdepth*OperationWindow);
+		call EpochTimer.startPeriodicAt(-sim_time()/10000000000 - jitter-2*(curdepth+1)*OperationWindow,EPOCH_PERIOD_MILLI);
 	}
 
 	task void sendRoutingTask(){
