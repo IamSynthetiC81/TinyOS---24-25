@@ -20,7 +20,7 @@ python mySimulation.py path/to/topology.txt path/to/logfile
 
 Η έξοδος του αρχείου ανάλυσης έχει την εξής μορφή:
 
-```txt
+```log
 0
  +-- 1
  |   +-- 2
