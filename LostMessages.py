@@ -98,7 +98,6 @@ def MessagesLost(lines, children, missingNodes, logfile = None):
     # find if any messages from the children are lost
 
     if logfile != None:
-        print("Printing the messages lost to the log file")
         try :
             f = open(logfile, 'a')
             f.write("\nPrinting the messages lost :\n")
@@ -128,7 +127,7 @@ def MessagesLost(lines, children, missingNodes, logfile = None):
                 # which element is missing
                 missing = list(set(messages[node][1]) - set(messages[node][0]))
                 if len(missing) > 0:
-                    print("Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1)
+                    print "Node ", node, " is missing messages from ", missing, " on epoch ", epoch-1
 
                     if logfile != None:
                         f.write("Node %s is missing messages from %s on epoch %d\n" % (node, missing, epoch-1))
@@ -189,7 +188,7 @@ def print_ascii_tree(node_list, logfile = None):
             f = open(logfile, 'a')
             f.write("\nPrinting the tree :\n")
         except:
-            print("Log file not opened!!! \n")
+            print "Log file not opened!!! \n"
             exit()
     tree = OD()
 

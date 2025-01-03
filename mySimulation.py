@@ -127,8 +127,6 @@ for i,node in enumerate(Nodes):
 		elif i!=j:
 			noConnections.append(altNode)
 	f.write("Node %d is connected to %s and not connected to %s\n" % (node, connections, noConnections))
-    # connections contains integers of nodes connected to node. print them in the format "Node %d" is connected to Node %d, Node %d, Node %d
-	# print "Node ",node," is connected to ",connections," and not connected to ",noConnections
     
 f.flush()
 f.close()
@@ -138,3 +136,4 @@ while f.closed == False:
     pass
 print "Running analysis"
 LostMessages.runAnalysis(sys.argv[2])
+uP_Timing.runAnalysis(sys.argv[2])
