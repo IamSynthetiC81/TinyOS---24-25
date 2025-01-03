@@ -23,7 +23,7 @@ module SRTreeC
 	uses interface PacketQueue as DataAvgSendQueue;
 	uses interface PacketQueue as DataAvgReceiveQueue;
 
-uses interface Timer<TMilli> as EpochTimer;
+	uses interface Timer<TMilli> as SlotTimer;
 	
 	uses interface Receive as RoutingReceive;
 	uses interface Receive as DataMaxReceive;
@@ -38,7 +38,6 @@ uses interface Timer<TMilli> as EpochTimer;
 }
 implementation
 {
-	// Epochs
 	uint16_t  epochCounter;
 	
 	message_t radioRoutingSendPkt;
@@ -58,8 +57,6 @@ implementation
 	bool MessageAvgSendBusy=FALSE;
 	bool MessageMaxSendBusy=FALSE;
 	
-	bool lostPacket=FALSE;
-
 	uint8_t curdepth;
 	uint16_t parentID;
 
@@ -90,6 +87,7 @@ implementation
 	/**
 	 * Function to handle the caching mechaninsm for the children
 	 * @param childID The ID of the child node
+	 * @note this functionality is not used in the current implementation
 	 */
 	void handleChild(uint16_t id){
 		uint8_t i;
@@ -157,6 +155,8 @@ implementation
 		if (COMMAND_TO_RUN == 1){
 			dbg("SRTreeC", "\n\trootResults(): MAX = %d\n\n", sum);
 		} else {
+
+			dbg("SRTreeC", "\n\trootResults(): Root value = %d\n", measurement);
 			dbg("SRTreeC", "\n\trootResults(): AVG = %f\n\n", (float)sum / count);
 		}
 	}
@@ -171,14 +171,12 @@ implementation
 		// Initialize the random number generator
 		call GeneratorSeed.init(time(NULL)+TOS_NODE_ID*1000);
 		
+		// Set the node ID in the NodeInformation component
 		call NodeInformation.setNodeId(TOS_NODE_ID);
 
 		if(TOS_NODE_ID==0) {  // Root node initialization
 			curdepth=0;
 			parentID=0;
-
-			call NodeInformation.setDepth(curdepth);
-			call NodeInformation.setParent(parentID);
 
 			dbg("Boot", "curdepth = %d  ,  parentID= %d \n", curdepth , parentID);
 
@@ -195,12 +193,12 @@ implementation
 			curdepth=-1;
 			parentID=-1;
 
-			call NodeInformation.setDepth(curdepth);
-			call NodeInformation.setParent(parentID);
-
 			dbg("Boot", "curdepth = %d  ,  parentID= %d \n", curdepth , parentID);
 		}
 
+		// Set the depth and parent ID in the NodeInformation component
+		call NodeInformation.setDepth(curdepth);
+		call NodeInformation.setParent(parentID);
 		initializeSensorValue();
 	}
 	
@@ -269,16 +267,21 @@ implementation
 		}
 	}
 
+	/**
+	 * @brief Function to apply jitter to the window
+	 * @note This function is not used in the current implementation
+	 * @note This function was meant to be used along with a packet loss detection mechanism to avoid collisions
+	 */
 	task void ApplyWindowJitter(){
 		uint32_t nextTimeFiredAt;
 		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
 		nextTimeFiredAt = (epochCounter+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000 + jitter;
 
 		dbg("SRTreeC", "ApplyWindowJitter(): NextTimeFiredAt = %d\n", nextTimeFiredAt);
-		call EpochTimer.startPeriodicAt(nextTimeFiredAt, EPOCH_PERIOD_MILLI);
+		call SlotTimer.startPeriodicAt(nextTimeFiredAt, EPOCH_PERIOD_MILLI);
 	}
 		
-	event void EpochTimer.fired() {
+	event void SlotTimer.fired() {
 		epochCounter++;
 		EpochStartTime = sim_time()/10000000000;
 
@@ -386,27 +389,12 @@ implementation
 	// Start Epoch
 	task void startEpoch(){
 		int32_t t0;
-
-		/**
-			Set a periodic timer to repeat every dt time units. Replaces any
-			current timer settings. The <code>fired</code> will be signaled every
-			dt units (first event at t0+dt units). Periodic timers set in the past
-			will get a bunch of events in succession, until the timer "catches up".*
-			<p>Because the current time may wrap around, it is possible to use
-			values of t0 greater than the <code>getNow</code>'s result. These
-			values represent times in the past, i.e., the time at which getNow()
-			would last of returned that value.*
-			@param t0 Base time for timer.
-			@param dt Time until the timer fires.
-			command void startPeriodicAt(uint32_t t0, uint32_t dt);
-		*/
-
 		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
 
 		t0 = -(sim_time()*1.024/10000000 + jitter+(curdepth+1)*OperationWindow);
 
 		dbg("SRTreeC", "startEpoch(): Timer started at %d\n", t0);
-		call EpochTimer.startPeriodicAt(t0,EPOCH_PERIOD_MILLI);
+		call SlotTimer.startPeriodicAt(t0,EPOCH_PERIOD_MILLI);
 	}
 
 	task void sendRoutingTask(){
@@ -507,12 +495,6 @@ implementation
 	task void windowTask() {
 		message_t tmp;
 		
-		if (lostPacket){
-			dbg("SRTreeC", "window(): Lost previous packet!!!\n");
-			post ApplyWindowJitter();
-			lostPacket=FALSE;
-		}
-
 		if (COMMAND_TO_RUN == 1) {  // MAX
 			DataMaxMsg* mpkt;
 			// If DataMaxReceiveQueue is empty then send measurement to parent

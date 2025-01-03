@@ -12,17 +12,11 @@ make micaz sim
 Για να τρέξουμε τον κώδικα του tinyOS
 
 ```bash
-python mySimulation.py path/to/topology.txt
+python mySimulation.py path/to/topology.txt path/to/logfile
 ```
 
-Για να τρέξει το scrpt της ανάλυσης των αποτελεσμάτων πρέπει να τρέξουμε το παρακάτω
+Με τον παραπάνω τρόπο, αποθηκεύουμε την έξοδο του προγράμματος σε ένα αρχείο (.log αρχεία φουλεύουν καλύτερα) και παράλληλα τρέχουμε και προγράμματα ανάλυσης τα οποία αναλύουν το δέντρο και εντοπίζουν χαμένα μυνήματα.
 
-```bash
-# pipe the output of the simulation to a file
-python mySimulation.py path/to/topology.txt > path/to/output.txt
-# run the analysis script with the output file as an argument
-python LostMessagesAnalysis.py path/to/output.txt
-```
 
 Η έξοδος του αρχείου ανάλυσης έχει την εξής μορφή:
 

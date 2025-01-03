@@ -13,6 +13,13 @@ module MicroPulseC
 
     uses interface NodeInformation as NodeInformation;
 
+    /*
+        OriginalTimer is wired to the SRTree timer that is responsible 
+        for the windowing mechanism of the nodes.
+
+        Here, we are using the same timer to handle the MicroPulse protocol
+        and we are repurposing it to handle the MicroPulse windows.
+    */
     uses interface Timer<TMilli> as originalTimer;
 } implementation {
     task void uPsendTask();
@@ -21,24 +28,30 @@ module MicroPulseC
 
     message_t radio_uP_SendPkt;
 
-    uint16_t uP_node_load 	= 0;
-    uint16_t uP_parrent_load = 0;
-    uint16_t uP_child_load 	= 0;
-    bool 	 uP_Phase 		= uP_PHASE_1;
+    uint16_t uP_node_load 	= 0;                                        // The load of the current node
+    uint16_t uP_parrent_load = 0;                                       // The load of the parent node
+    uint16_t uP_child_load 	= 0;                                        // The maximum load of the children nodes
+    bool 	 uP_Phase 		= uP_PHASE_1;                               // The current phase of the MicroPulse protocol
 
-    uint8_t curdepth;
-    uint8_t parentID;
+    /* interface NodeInformation */
+    uint8_t curdepth;                                                   // The depth of the current node
+    uint8_t parentID;                                                   // The parent ID of the current node
 
     uint8_t epochCounter = 0;
     uint32_t bootTime = 0;
-
-    bool uP_Tasking = TRUE;
     
+    /**
+    * @brief This event is used to get the boot time dynamically
+    */
     event void Boot.booted(){
         bootTime = sim_time()/10000000000;
         dbg("SRTreeC", "MicroPulseC booted at %d\n", bootTime);
     }
 
+    /**
+    * @brief This event is used to get the parent and depth info and initialize the MicroPulse protocol
+
+    */
     event void originalTimer.fired(){
         epochCounter++;
         if (epochCounter == START_AT_EPOCH){
@@ -47,7 +60,11 @@ module MicroPulseC
             curdepth = call NodeInformation.getDepth();
             post uPStart();
         }
-    }
+
+    /**
+    * @brief This event is used to handle both of the phases, when MicroPulse is initialized
+
+    */    }
 
     event message_t* uPReceive.receive( message_t * msg , void * payload, uint8_t len){
 		error_t enqueueDone;
@@ -128,10 +145,16 @@ module MicroPulseC
 		return msg;
 	}
 
+    /**
+    * @brief This event is used to handle the completion of the send operation
+    */
 	event void uPAMSend.sendDone(message_t * msg , error_t err){
-		uP_Tasking = FALSE;
+		
 	}
-
+    
+    /**
+    * @brief This task sends the MicroPulse message
+    */
     task void uPsendTask(){
         uint8_t mlen;
         uint16_t mdest;
@@ -167,9 +190,11 @@ module MicroPulseC
         } else {
             dbg("SRTreeC","send failed!!!\n");
         }
-        uP_Tasking = TRUE;
     }
 
+    /**
+    * @brief This task handles the turnover of MicroPulse phases and sends data to children
+    */
     task void uP_RootHandler(){
         // send data to children
         uint16_t pkt, bare_data;
@@ -204,6 +229,16 @@ module MicroPulseC
         }
     }
 
+    /**
+    * @brief This task is responsible for handling the MicroPulse protocol
+    *
+    * This function handles the MicroPulse protocol. It is responsible for the following:
+    * 1. Reading any incoming data from the uPReceiveQueue
+    * 2. If the phase is 1, it generates a random uP_node_load value, 
+    *       encodes the data value and phase bit, and sends 
+    *       the encoded data value to the parent node
+    * 3. If the phase is 2, it tunes the window and sends the data to the children 
+    */
     task void uPStart(){
         uint16_t data = 0, max = 0;
         uint16_t window_lower_lim = -1;
@@ -244,8 +279,6 @@ module MicroPulseC
 
             dbg("SRTreeC", "uPStart(): uPulse packet received from %d with data = %d and phase %d\n", msource, data, uP_Phase);
         }
-
-        uP_Tasking = FALSE;
 
         if (uP_Phase == uP_PHASE_1){
             /*
@@ -313,13 +346,16 @@ module MicroPulseC
         }
     }	
 
+    /**
+    * @brief Retunes the timer to start in accordance with MicroPulse
+    * @note This function will return the timer in accordance with @link START_AT_EPOCH @endlink
+    */
     task void uP_TimerTune(){
         uint32_t epoch5_start;
         uint32_t window_lower_lim;
     
         epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI) - bootTime*1024;
         window_lower_lim = epoch5_start - (uP_parrent_load + uP_node_load)*1.024;
-        dbg("SRTreeC", "uP_TimerTune(): epoch5_start = %d\nNode load = %d, Parrent load = %d, Child load = %d\n", epoch5_start, uP_node_load, uP_parrent_load, uP_child_load);
 
         call originalTimer.startPeriodicAt(window_lower_lim, EPOCH_PERIOD_MILLI);
     }	

@@ -15,7 +15,7 @@ implementation {
 
     components MainC, ActiveMessageC, MicroPulseC;
     
-    components new TimerMilliC() as EpochTimerC;
+    components new TimerMilliC() as SlotTimerC;
     
     components new AMSenderC(AM_ROUTINGMSG) as RoutingSenderC;
     components new AMReceiverC(AM_ROUTINGMSG) as RoutingReceiverC;
@@ -44,7 +44,7 @@ implementation {
 
     SRTreeC.Boot -> MainC.Boot;
     SRTreeC.RadioControl -> ActiveMessageC;
-    SRTreeC.EpochTimer -> EpochTimerC;
+    SRTreeC.SlotTimer -> SlotTimerC;
     SRTreeC.NodeInformation -> NodeInformationC;
 
     // Routing
@@ -72,7 +72,7 @@ implementation {
     SRTreeC.DataAvgReceiveQueue -> DataAvgReceiverQueueC;
 
     // MicroPulse packet
-    MicroPulseC.originalTimer -> EpochTimerC;
+    MicroPulseC.originalTimer -> SlotTimerC;
     MicroPulseC.uPPacket -> uPSenderC.Packet;
     MicroPulseC.uPAMPacket -> uPSenderC.AMPacket;
     MicroPulseC.uPAMSend -> uPSenderC.AMSend;
