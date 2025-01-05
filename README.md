@@ -21,6 +21,7 @@ python mySimulation.py path/to/topology.txt path/to/logfile
 Η έξοδος του αρχείου ανάλυσης έχει την εξής μορφή:
 
 ```log
+Printing the tree :
 0
  +-- 1
  |   +-- 2
@@ -46,6 +47,8 @@ python mySimulation.py path/to/topology.txt path/to/logfile
              +-- 22
              +-- 23
              +-- 14
+
+Printing the messages lost :
 Node  0  is missing messages from  ['6']  on epoch  2
 Node  2  is missing messages from  ['8']  on epoch  3
 Node  18  is missing messages from  ['22']  on epoch  5
