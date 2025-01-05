@@ -21,10 +21,7 @@ python mySimulation.py path/to/topology.txt path/to/logfile
 Η έξοδος του αρχείου ανάλυσης έχει την εξής μορφή:
 
 ```log
-<<<<<<< HEAD
 Printing the tree :
-=======
->>>>>>> 91a2e2a2ea15c9099ec8ee5e84461332f2e6d32a
 0
  +-- 1
  |   +-- 2
