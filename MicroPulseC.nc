@@ -306,7 +306,7 @@ module MicroPulseC{
                     mpkt->data = data;
                 }
 
-                call uPAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
+                call uPAMPacket.setDestination(&tmp, parentID);
                 call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
 
                 // enqueue the message
