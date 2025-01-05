@@ -226,7 +226,6 @@ def runAnalysis(filename):
     children = getChildren(map, NodesMissing(tree, map))
     children = sorted(children, key=lambda i: i['node'])
 
-    print("Tree: ", tree)
     print_ascii_tree(children, filename)
 
     print("\nMessages Lost: ")

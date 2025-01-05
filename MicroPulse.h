@@ -6,13 +6,6 @@
 #define _uP_QUEUE_SIZE_ 100
 
 #define START_AT_EPOCH 5
-#if START_AT_EPOCH < 1
-    #error "START_AT_EPOCH must be greater than 0"
-#endif
-#if START_AT_EPOCH > 15
-    #error "START_AT_EPOCH must be less than 16"
-#endif
-
 enum {
     uP_PHASE_1 = FALSE,
     uP_PHASE_2 = TRUE,

@@ -497,75 +497,53 @@ implementation
 		
 		if (COMMAND_TO_RUN == 1) {  // MAX
 			DataMaxMsg* mpkt;
-			// If DataMaxReceiveQueue is empty then send measurement to parent
-			if (call DataMaxReceiveQueue.empty()) {
-				// Create the message, we need to send
-				mpkt = (DataMaxMsg*) (call DataMaxPacket.getPayload(&tmp, sizeof(DataMaxMsg)));
+			uint8_t max;
 
-				dbg("SRTreeC", "window(): No Data Received!!!\n");
+			max = measurement;
 
-				atomic {
-					mpkt->data = measurement;
+			// Iterate through DataMaxReceiveQueue and dequeue every message,
+			// comparing their value to current value of the node
+			while (!call DataMaxReceiveQueue.empty()) {
+				message_t radioDataReceivePkt = call DataMaxReceiveQueue.dequeue();
+				uint8_t len = call DataMaxPacket.payloadLength(&radioDataReceivePkt);
+				uint16_t msource = call DataMaxAMPacket.source(&radioDataReceivePkt);
+
+				if (msource == parentID) {
+					dbg("SRTreeC", "window(): Message Rejected from [%d]\n", msource);
+					continue;
 				}
 
-				call DataMaxAMPacket.setDestination(&tmp, parentID);
-				call DataMaxPacket.setPayloadLength(&tmp, sizeof(DataMaxMsg));
+				if (len != sizeof(DataMaxMsg)) {
+					dbg("SRTreeC", "window(): Unknown message received!!!\n");
+					continue;
+				}
 
-				dbg("SRTreeC", "window(): Sending Measurement [%d] to Parent %d \n", measurement, parentID);
+				mpkt = (DataMaxMsg*) (call DataMaxPacket.getPayload(&radioDataReceivePkt, len));
+				if (mpkt->data > max) {
+					max = mpkt->data;
+				}
+
+				dbg("SRTreeC", "window(): Data Received from %d: Value = %d\n", msource, mpkt->data);
+			}
+			// If root node, print the results
+			if (TOS_NODE_ID == 0) {
+				dbg("SRTreeC", "window(): Sending Results to PC\n");
+				rootResults(0, max);
+			} else { // If non-root node send data to parent
+				mpkt = (DataMaxMsg*) (call DataMaxPacket.getPayload(&tmp, sizeof(DataMaxMsg)));
+
+				atomic {
+					mpkt->data = max;
+				}
+				call DataMaxAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
+				call DataMaxPacket.setPayloadLength(&tmp, sizeof(DataMaxMsg));
 
 				// Check if the enqueue operation was successful
 				if (call DataMaxSendQueue.enqueue(tmp) == SUCCESS) {
-					dbg("SRTreeC", "window(): DataMaxMsg enqueued in SendingMaxQueue successfully!!!\n");
+					dbg("SRTreeC", "window(): DataMaxMsg enqueued in SendingQueue successfully!!!\n");
 					post sendMaxDataTask();
 				} else {
-					dbg("SRTreeC", "window(): DataMaxMsg failed to be enqueued in SendingMaxQueue!!!\n");
-				}
-			} else { // If DataMaxReceiveQueue is not empty
-				uint8_t max;
-
-				max = measurement;
-
-				// Iterate through DataMaxReceiveQueue and dequeue every message,
-				// comparing their value to current value of the node
-				while (!call DataMaxReceiveQueue.empty()) {
-					message_t radioDataReceivePkt = call DataMaxReceiveQueue.dequeue();
-					uint8_t len = call DataMaxPacket.payloadLength(&radioDataReceivePkt);
-					uint16_t msource = call DataMaxAMPacket.source(&radioDataReceivePkt);
-
-
-					if (len != sizeof(DataMaxMsg)) {
-						dbg("SRTreeC", "window(): Unknown message received!!!\n");
-						continue;
-					}
-
-					mpkt = (DataMaxMsg*) (call DataMaxPacket.getPayload(&radioDataReceivePkt, len));
-					if (mpkt->data > max) {
-						max = mpkt->data;
-					}
-
-					dbg("SRTreeC", "window(): Data Received from %d: Value = %d\n", msource, mpkt->data);
-				}
-
-				// If root node, print the results
-				if (TOS_NODE_ID == 0) {
-					dbg("SRTreeC", "window(): Sending Results to PC\n");
-					rootResults(0, max);
-				} else { // If non-root node send data to parent
-					mpkt = (DataMaxMsg*) (call DataMaxPacket.getPayload(&tmp, sizeof(DataMaxMsg)));
-
-					atomic {
-						mpkt->data = max;
-					}
-					call DataMaxAMPacket.setDestination(&tmp, parentID);
-					call DataMaxPacket.setPayloadLength(&tmp, sizeof(DataMaxMsg));
-
-					// Check if the enqueue operation was successful
-					if (call DataMaxSendQueue.enqueue(tmp) == SUCCESS) {
-						dbg("SRTreeC", "window(): DataMaxMsg enqueued in SendingQueue successfully!!!\n");
-						post sendMaxDataTask();
-					} else {
-						dbg("SRTreeC", "window(): DataMaxMsg failed to be enqueued in SendingQueue!!!\n");
-					}
+					dbg("SRTreeC", "window(): DataMaxMsg failed to be enqueued in SendingQueue!!!\n");
 				}
 			}
 		} else {  // AVG

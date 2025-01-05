@@ -1,7 +1,6 @@
 #include "MicroPulse.h"
 
-module MicroPulseC
-{
+module MicroPulseC{
     uses interface Boot;
 
     uses interface Packet as uPPacket;
@@ -320,29 +319,9 @@ module MicroPulseC
 
                 
             }
-        } else if (uP_Phase == uP_PHASE_2){
-            /*
-                1. tune window
-                2. send data to children
-            */
-
-            uP_parrent_load = data;
-            mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
-
-            atomic{
-                mpkt->data = uP_parrent_load + uP_node_load;
-            }
-
-            call uPAMPacket.setDestination(&tmp, AM_BROADCAST_ADDR);
-            call uPPacket.setPayloadLength(&tmp, sizeof(MicroPulseMsg));
-
-            if (call uPSendQueue.enqueue(tmp) == SUCCESS) {
-                dbg("SRTreeC", "uP_Phase(): MicroPulseMsg enqueued in SendingQueue successfully!!!\n");
-                post uPsendTask();
-            } else {
-                dbg("SRTreeC", "uP_Phase(): MicroPulseMsg failed to be enqueued in SendingQueue!!!\n");
-            }
-
+        } else {
+            dbg("SRTreeC", "uPStart(): Error\n wat is dis ?", data);
+            return;
         }
     }	
 
