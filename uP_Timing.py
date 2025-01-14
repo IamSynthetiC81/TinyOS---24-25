@@ -48,12 +48,13 @@ def plot_timing_diagram(node_data):
     '''
     for node in node_data:
         epochs = [x[1] for x in node_data[node]]
-        nanoseconds = [x[0] for x in node_data[node]]
+        ms = [x[0]*10**-(9+6) for x in node_data[node]]
+        # ms*10**-(9+6) to convert to ms
 
-        plt.plot(epochs, nanoseconds, label="Node " + str(node))
+        plt.plot(epochs, ms, label="Node " + str(node))
 
     plt.xlabel("Epoch")
-    plt.ylabel("Time (ns)")
+    plt.ylabel("Time (ms)")
     plt.title("Time vs Epoch")
     plt.legend()
     plt.grid()
@@ -100,12 +101,14 @@ def plot_epoch_start(node_data):
 
     # plot the data
     for i,node in enumerate(timesets):
-        time = [x['time'] for x in timesets[node]]
+        time = [x['time']*10**-(9+3) for x in timesets[node]]
         epoch = [x['epoch'] for x in timesets[node]]
         plt.plot(epoch, time, 'o', label="Node " + str(node), color=colours[i])
 
+    # have ytics in scientific notation
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     plt.xlabel("Epoch")
-    plt.ylabel("Time (ns)")
+    plt.ylabel("Time (ms)")
     plt.title("Time vs Node")
     plt.legend(loc='center left', bbox_to_anchor=(0.9, 0.5))
     plt.grid()
