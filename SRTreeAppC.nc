@@ -16,6 +16,8 @@ implementation {
     components MainC, ActiveMessageC, MicroPulseC;
     
     components new TimerMilliC() as SlotTimerC;
+    components new TimerMilliC() as MicroPulseTransmitTimerC;
+    components new TimerMilliC() as MicroPulseTimerC;
     
     components new AMSenderC(AM_ROUTINGMSG) as RoutingSenderC;
     components new AMReceiverC(AM_ROUTINGMSG) as RoutingReceiverC;
@@ -46,6 +48,7 @@ implementation {
     SRTreeC.RadioControl -> ActiveMessageC;
     SRTreeC.SlotTimer -> SlotTimerC;
     SRTreeC.NodeInformation -> NodeInformationC;
+    SRTreeC.uP_TransmitTimer -> MicroPulseTransmitTimerC;
 
     // Routing
     SRTreeC.RoutingPacket -> RoutingSenderC.Packet;
@@ -73,13 +76,19 @@ implementation {
 
     // MicroPulse packet
     MicroPulseC.originalTimer -> SlotTimerC;
+    MicroPulseC.uP_ReceiverTimer -> MicroPulseTimerC;
+    MicroPulseC.uP_TransmitTimer -> MicroPulseTransmitTimerC;
+    MicroPulseC.RadioControl -> ActiveMessageC;
     MicroPulseC.uPPacket -> uPSenderC.Packet;
     MicroPulseC.uPAMPacket -> uPSenderC.AMPacket;
     MicroPulseC.uPAMSend -> uPSenderC.AMSend;
+    MicroPulseC.original_AMSend -> DataMaxSenderC.AMSend;
+    MicroPulseC.original_AMSend -> DataAvgSenderC.AMSend;
     MicroPulseC.uPReceive -> uPReceiverC.Receive;
     MicroPulseC.uPSendQueue -> uPSenderQueueC;
     MicroPulseC.uPReceiveQueue -> uPReceiverQueueC;
     MicroPulseC.NodeInformation -> NodeInformationC;
+    MicroPulseC.RandomGenerator -> RandomNumberGeneratorC;
     MicroPulseC.Boot -> MainC.Boot;
 
     SRTreeC.RandomGenerator -> RandomNumberGeneratorC;

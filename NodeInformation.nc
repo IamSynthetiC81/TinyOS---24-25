@@ -9,5 +9,5 @@ interface NodeInformation
     command bool setParent(uint8_t parent);
 
     command bool isRoot();
-    command bool isLeaf();
+    // command bool isLeaf();
 }

@@ -10,7 +10,13 @@ module MicroPulseC{
 	uses interface PacketQueue as uPSendQueue;
 	uses interface PacketQueue as uPReceiveQueue;
 
+    uses interface Random as RandomGenerator;
+
+    uses interface SplitControl as RadioControl;
+
     uses interface NodeInformation as NodeInformation;
+
+    uses interface AMSend as original_AMSend;
 
     /*
         OriginalTimer is wired to the SRTree timer that is responsible 
@@ -20,6 +26,8 @@ module MicroPulseC{
         and we are repurposing it to handle the MicroPulse windows.
     */
     uses interface Timer<TMilli> as originalTimer;
+    uses interface Timer<TMilli> as uP_ReceiverTimer;
+    uses interface Timer<TMilli> as uP_TransmitTimer;
 } implementation {
     task void uPsendTask();
 	task void uPStart();
@@ -27,10 +35,11 @@ module MicroPulseC{
 
     message_t radio_uP_SendPkt;
 
-    uint16_t uP_node_load 	= 0;                                        // The load of the current node
-    uint16_t uP_parrent_load = 0;                                       // The load of the parent node
-    uint16_t uP_child_load 	= 0;                                        // The maximum load of the children nodes
-    bool 	 uP_Phase 		= uP_PHASE_1;                               // The current phase of the MicroPulse protocol
+    uint16_t uP_node_load 	    = 0;                                    // The load of the current node
+    uint16_t uP_parrent_load    = 0;                                    // The load of the parent node
+    uint16_t uP_child_load_max 	= 0;                                    // The maximum load of the children nodes
+    uint16_t uP_child_load_min 	= 0;                                    // The minimum load of the children nodes
+    bool 	 uP_Phase 		    = uP_PHASE_1;                           // The current phase of the MicroPulse protocol
 
     /* interface NodeInformation */
     uint8_t curdepth;                                                   // The depth of the current node
@@ -39,12 +48,35 @@ module MicroPulseC{
     uint8_t epochCounter = 0;
     uint32_t bootTime = 0;
     
+    uint16_t generateJitter(){
+        uint32_t jitter;
+        jitter = (call RandomGenerator.rand16() % _uP_DATA_MIN_CONSTRAINT_) + 1;
+        
+        dbg("SRTreeC", "Jitter = %d\n", jitter);
+
+        return jitter;
+    }
+
     /**
     * @brief This event is used to get the boot time dynamically
     */
     event void Boot.booted(){
         bootTime = sim_time()/10000000000;
         dbg("SRTreeC", "MicroPulseC booted at %d\n", bootTime);
+
+
+    }
+
+    event void RadioControl.startDone(error_t err){
+        dbg ("SRTreeC", "RadioControl.startDone(): Radio is now open\n");
+    }
+
+    event void RadioControl.stopDone(error_t err){
+        dbg ("SRTreeC", "RadioControl.stopDone(): Radio is closed\n");
+    }
+
+    event void uP_TransmitTimer.fired(){
+
     }
 
     /**
@@ -54,17 +86,25 @@ module MicroPulseC{
     event void originalTimer.fired(){
         epochCounter++;
         if (epochCounter == START_AT_EPOCH){
+            uint32_t jitter;
             dbg("SRTreeC", "MicroPulseC booted!!!\n");
             parentID = call NodeInformation.getParent();
             curdepth = call NodeInformation.getDepth();
             post uPStart();
-        }
+        } 
+
+    }
+
+    event void uP_ReceiverTimer.fired(){
+        dbg("SRTreeC", "uP_ReceiverTimer.fired(): Radio is now open for reception\n");
+
+        //@TODO : This is where the radio should be opened for reception
+        call RadioControl.start();
+    }
 
     /**
     * @brief This event is used to handle both of the phases, when MicroPulse is initialized
-
-    */    }
-
+    */    
     event message_t* uPReceive.receive( message_t * msg , void * payload, uint8_t len){
 		error_t enqueueDone;
 		message_t tmp;
@@ -148,8 +188,18 @@ module MicroPulseC{
     * @brief This event is used to handle the completion of the send operation
     */
 	event void uPAMSend.sendDone(message_t * msg , error_t err){
-		
+        if (err == SUCCESS){
+            dbg("SRTreeC", "uPAMSend.sendDone(): Send operation completed successfully!!!\n");
+        } else {
+            dbg("SRTreeC", "uPAMSend.sendDone(): Send operation failed!!!\n");
+        }
 	}
+
+    event void original_AMSend.sendDone(message_t * msg , error_t err){
+        if (epochCounter > START_AT_EPOCH){
+            call RadioControl.stop();
+        }
+    }
     
     /**
     * @brief This task sends the MicroPulse message
@@ -202,8 +252,7 @@ module MicroPulseC{
         error_t err;
 
         mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
-        // pkt = uP_node_load + uP_parrent_load;
-        pkt = uP_node_load + uP_child_load;
+        pkt = uP_node_load + uP_child_load_max;
         bare_data = pkt;
 
         uP_Phase = uP_PHASE_2;
@@ -241,7 +290,6 @@ module MicroPulseC{
     task void uPStart(){
         uint16_t data = 0, max = 0;
         uint16_t window_lower_lim = -1;
-        uint16_t window_upper_lim = -1;
         uint16_t epoch6_start = -1;
         uint16_t msource = -1;
         uint8_t len = -1;
@@ -258,7 +306,6 @@ module MicroPulseC{
             len = call uPPacket.payloadLength(&radio_uP_SendPkt);
             msource = call uPAMPacket.source(&radio_uP_SendPkt);
 
-            //@TODO : Program enters this block, and the message is not received
             if (len != sizeof(MicroPulseMsg)) {
             	dbg("SRTreeC", "uPStart(): Unknown message received!!!\n");
             	continue;
@@ -272,8 +319,13 @@ module MicroPulseC{
 
             decode(&data, &uP_Phase);
 
-            if (uP_Phase == 0 && data > max) {
-                max = data;
+            if (uP_Phase == uP_PHASE_1){
+                if (data > max) {
+                    uP_child_load_max = data;
+                }
+                if (data < uP_child_load_min) {
+                    uP_child_load_min = data;
+                }
             }
 
             dbg("SRTreeC", "uPStart(): uPulse packet received from %d with data = %d and phase %d\n", msource, data, uP_Phase);
@@ -286,15 +338,15 @@ module MicroPulseC{
                 4. Send the encoded data value to the parent node
             */
 
-            uP_child_load = data;
+            uP_child_load_max = data;
 
             mpkt = (MicroPulseMsg*) (call uPPacket.getPayload(&tmp, sizeof(MicroPulseMsg)));
 
             // @TODO : Question --> Does the root node need a random uP_node_load value or as SINK it has 0 load ?
             uP_node_load = uP_randLoad();
-            data = uP_node_load + max;
+            data = uP_node_load + uP_child_load_max;
 
-            dbg("SRTreeC", "uPStart(): uP_node_load = %d and uP_child_load = %d\n", uP_node_load, uP_child_load);
+            dbg("SRTreeC", "uPStart(): uP_node_load = %d and uP_child_load_max = %d\n", uP_node_load, uP_child_load_max);
 
             if (TOS_NODE_ID == 0) {
                 dbg("SRTreeC", "uPStart(): Phase 1 complete. CriticalPath is %d\n", data);
@@ -332,10 +384,14 @@ module MicroPulseC{
     task void uP_TimerTune(){
         uint32_t epoch5_start;
         uint32_t window_lower_lim;
-    
-        epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI) - bootTime*1024;
-        window_lower_lim = epoch5_start - (uP_parrent_load + uP_node_load)*1.024;
+        uint32_t jitter;
 
-        call originalTimer.startPeriodicAt(window_lower_lim, EPOCH_PERIOD_MILLI);
+        jitter = generateJitter();
+
+        epoch5_start = ((START_AT_EPOCH)*EPOCH_PERIOD_MILLI) - bootTime*1024;
+        window_lower_lim = epoch5_start - (uP_parrent_load)*1.024;
+
+        call uP_ReceiverTimer.startPeriodicAt(window_lower_lim - _uP_DATA_MIN_CONSTRAINT_*1.024 , EPOCH_PERIOD_MILLI);
+        call originalTimer.startPeriodicAt(window_lower_lim + (uP_node_load - jitter)*1.024, EPOCH_PERIOD_MILLI);
     }	
 }

@@ -129,6 +129,62 @@ def plot_epoch_start(node_data):
     plt.savefig(_plotDir + "Node Timings Zoomed.png")
     plt.clf()
     
+def plot_radio_usage(logfile):
+    epoch = 1
+    radio_open = []
+    radio_close = []
+
+    # read the logfile
+    try :
+        logfile = open(logfile, 'r')
+    except FileNotFoundError:
+        print('File not found')
+        return
+
+    for line in logfile:
+        if 'Epoch' in line:
+            epoch = int(line.split(' ')[-1])
+        if 'Radio is now open' in line:
+            # 0:5:19.800781270 DEBUG (4): RadioControl.startDone(): Radio is now open
+            node = int(line.split(' ')[2].split(')')[0].split('(')[1])
+            # print('Node ' + str(node) + ' opened radio at epoch ' + str(epoch))
+
+            time = line.split(' ')[0].split(':')
+
+            if len(radio_open)-1 == epoch:
+                print 'Epoch ' + str(epoch) + ' not in radio_open'
+                # i get IndexError: list index out of range
+                # radio_open[epoch] = []
+                radio_open.append([])
+            # print(radio_open)
+            # radio_open[epoch-1].append((node, int(time[0])*3600*1e9 + int(time[1])*60*1e9 + float(time[2])*1e9))
+
+        if 'Radio is now closed' in line:
+            # 0:5:19.800781270 DEBUG (4): RadioControl.stopDone(): Radio is now closed
+            node = int(line.split(' ')[-2][1:-1])
+            print('Node ' + str(node) + ' closed radio at epoch ' + str(epoch))
+
+            time = line.split(' ')[0].split(':')
+
+            radio_close[epoch].append((node, int(time[0])*3600*1e9 + int(time[1])*60*1e9 + float(time[2])*1e9))
+
+    # plot the data
+    for i,node in enumerate(radio_open):
+        time = [x[1] for x in radio_open[node]]
+        node = [x[0] for x in radio_open[node]]
+        plt.plot(node, time, 'o', label="Open", color='red')
+
+        time = [x[1] for x in radio_close[node]]
+        node = [x[0] for x in radio_close[node]]
+        plt.plot(node, time, 'o', label="Close", color='blue')
+
+    plt.xlabel("Node")
+    plt.ylabel("Time (ns)")
+    plt.title("Radio Usage")
+    plt.legend()
+    plt.grid()
+    plt.savefig(_plotDir + "Radio Usage.png")
+
 def runAnalysis(logfile, plotDir='Analysis/plots/'):
     if logfile == None:
         print('No logfile provided')
@@ -159,3 +215,4 @@ def runAnalysis(logfile, plotDir='Analysis/plots/'):
 
     plot_timing_diagram(node_data)
     plot_epoch_start(node_data)
+    # plot_radio_usage(logfile)

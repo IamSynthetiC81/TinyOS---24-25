@@ -24,6 +24,7 @@ module SRTreeC
 	uses interface PacketQueue as DataAvgReceiveQueue;
 
 	uses interface Timer<TMilli> as SlotTimer;
+	uses interface Timer<TMilli> as uP_TransmitTimer;
 	
 	uses interface Receive as RoutingReceive;
 	uses interface Receive as DataMaxReceive;
@@ -60,11 +61,6 @@ implementation
 	uint8_t curdepth;
 	uint16_t parentID;
 
-	uint8_t childNum = 0;
-	uint16_t **childID = NULL;		/* childID[i][0] = ID of the child, 
-									 * childID[i][1] = number of times the child has sent data
-									 */
-	
 	uint8_t measurement = -1;
 	bool COMMAND_TO_RUN = 0;
 
@@ -81,38 +77,7 @@ implementation
 	task void sendMaxDataTask();
 	task void sendAvgDataTask();
 	task void SendRoutingMessage();
-
-	task void ApplyWindowJitter();
 	
-	/**
-	 * Function to handle the caching mechaninsm for the children
-	 * @param childID The ID of the child node
-	 * @note this functionality is not used in the current implementation
-	 */
-	void handleChild(uint16_t id){
-		uint8_t i;
-		for (i = 0; i < childNum; i++){
-			if (childID[i][0] == id){
-				childID[i][0] += 1;
-				return;
-			}
-			// @TODO : Add a cleanup mechanism to remove children that have not sent data for a long time
-		}
-		
-		childNum++;
-		childID = (uint16_t **) realloc(childID, childNum * sizeof(uint16_t *));
-		if (childID == NULL){
-			dbg("SRTreeC", "handleChild(): Memory reallocation failed!!!\n");
-			return;
-		}
-		childID[childNum - 1] = (uint16_t *) malloc(2 * sizeof(uint16_t));
-		childID[childNum - 1][0] = id;
-		childID[childNum - 1][1] = 1;
-
-		dbg("SRTreeC", "handleChild(): Child %d added!!!\n", id);
-
-	}
-
 	/**
 	 * Function to generate a random value between min and max
 	 * @param min The minimum value
@@ -205,7 +170,7 @@ implementation
 	event void RadioControl.startDone(error_t err){
 		if (err == SUCCESS) {
 			dbg("Radio" , "Radio initialized successfully!!!\n");		
-			if (TOS_NODE_ID==0){
+			if (TOS_NODE_ID==0 && epochCounter==0){
 				post SendRoutingMessage();
 				post startEpoch();
 			}
@@ -219,6 +184,14 @@ implementation
 		dbg("Radio", "Radio stopped!\n");
 	}
 	
+	event void uP_TransmitTimer.fired(){
+		// if (COMMAND_TO_RUN == 1) {
+		// 	post sendMaxDataTask();
+		// } else {
+		// 	post sendAvgDataTask();
+		// }
+	}
+
 	task void SendRoutingMessage(){
 		message_t tmp;
 		error_t enqueueDone;
@@ -267,20 +240,6 @@ implementation
 		}
 	}
 
-	/**
-	 * @brief Function to apply jitter to the window
-	 * @note This function is not used in the current implementation
-	 * @note This function was meant to be used along with a packet loss detection mechanism to avoid collisions
-	 */
-	task void ApplyWindowJitter(){
-		uint32_t nextTimeFiredAt;
-		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
-		nextTimeFiredAt = (epochCounter+1)*EPOCH_PERIOD_MILLI - sim_time()/10000000 + jitter;
-
-		dbg("SRTreeC", "ApplyWindowJitter(): NextTimeFiredAt = %d\n", nextTimeFiredAt);
-		call SlotTimer.startPeriodicAt(nextTimeFiredAt, EPOCH_PERIOD_MILLI);
-	}
-		
 	event void SlotTimer.fired() {
 		epochCounter++;
 		EpochStartTime = sim_time()/10000000000;
@@ -350,7 +309,6 @@ implementation
 		msource = call DataMaxAMPacket.source(msg);
 
 		dbg("SRTreeC", "DataMax packet received!!!  from %u \n", msource);
-		handleChild(msource);
 
 		// Copy the received message in tmp and enqueue it to DataMaxReceiveQueue
 		atomic{
@@ -369,7 +327,6 @@ implementation
 		uint16_t msource;
 
 		msource = call DataAvgAMPacket.source(msg);
-		handleChild(msource);
 		
 		dbg("SRTreeC", "DataAvg packet received!!!  from %u \n", msource);
 		
@@ -389,9 +346,9 @@ implementation
 	// Start Epoch
 	task void startEpoch(){
 		int32_t t0;
-		jitter = (call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID;
+		jitter = ((call RandomGenerator.rand32() % JITTER) + TOS_NODE_ID) * 1.024 ;
 
-		t0 = -(sim_time()*1.024/10000000 + jitter+(curdepth+1)*OperationWindow);
+		t0 = -(sim_time()*1.024/10000000 + jitter +(curdepth+1)*OperationWindow);
 
 		dbg("SRTreeC", "startEpoch(): Timer started at %d\n", t0);
 		call SlotTimer.startPeriodicAt(t0,EPOCH_PERIOD_MILLI);

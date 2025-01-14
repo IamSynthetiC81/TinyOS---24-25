@@ -22,10 +22,6 @@ python mySimulation.py path/to/topology.txt path/to/logfile
 
 ```log
 Printing the tree :
-<<<<<<< HEAD
-
-=======
->>>>>>> ae41e001affa562e1a35c25b5e9e68dea45248c8
 0
  +-- 1
  |   +-- 2

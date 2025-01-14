@@ -36,9 +36,4 @@ generic module NodeInformationC()
     command bool NodeInformation.isRoot(){
         return parent == 0;
     }
-    
-    command bool NodeInformation.isLeaf(){
-        // unimplemented
-        return FALSE;
-    }
 }
